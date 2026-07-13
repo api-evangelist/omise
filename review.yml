@@ -1,0 +1,167 @@
+aid: omise
+name: Omise
+review:
+  question: Does Omise expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Omise's only server-push mechanism is
+    outbound webhooks: when an account event occurs (charge.create,
+    charge.complete, refund.create, etc.) Omise sends an HTTP POST to the
+    merchant-configured webhook_uri. That is server-to-endpoint HTTP, not a
+    transport the consumer subscribes to over a persistent connection, and there
+    is no documented ws:// or wss:// endpoint. Per the WebSocket-precision rule,
+    the answer is false and no asyncapi/ artifact was created.
+findings:
+  summary: |
+    Omise (now Opn Payments) does not publish a documented public WebSocket API.
+    The platform is a REST API over HTTPS with two hosts: the core API at
+    https://api.omise.co (authenticated with the secret key via HTTP Basic) and
+    a PCI-scoped tokenization vault at https://vault.omise.co (authenticated
+    with the public key via HTTP Basic). Optional per-request API versioning is
+    done with the Omise-Version header. Asynchronous notification is delivered
+    by webhooks - Omise POSTs event payloads to a configured webhook_uri - and
+    the same events are also retrievable via the REST Events API (GET /events,
+    GET /events/{id}). No realtime, bidirectional, or streaming WebSocket
+    (ws:// or wss://) endpoint is documented anywhere in the Omise / Opn
+    Payments API reference as of the review date.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.omise.co
+      documented: true
+      note: Core API - charges, customers, sources, refunds, disputes, transfers, recipients, schedules, links, events, account, balance.
+    - protocol: REST
+      scheme: https
+      baseURL: https://vault.omise.co
+      documented: true
+      note: Tokenization vault (public key). POST /tokens, GET /tokens/{id}.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound HTTP POST of event objects to the merchant's webhook_uri. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the Omise / Opn Payments API reference as of the review date.
+  rebrand: |
+    Omise rebranded to Opn Payments (parent company Opn) in 2022. Documentation
+    now lives under both docs.omise.co and docs.opn.ooo, and marketing under
+    omise.co / opn.ooo, but the API hosts remain api.omise.co and
+    vault.omise.co and object/key prefixes remain Omise-native (skey_, pkey_,
+    tokn_, chrg_, cust_, src_, rfnd_, trsf_, recp_, schd_, evnt_).
+  endpointsConfirmedRest:
+    - POST   https://api.omise.co/charges
+    - GET    https://api.omise.co/charges
+    - GET    https://api.omise.co/charges/{id}
+    - PATCH  https://api.omise.co/charges/{id}
+    - POST   https://api.omise.co/charges/{id}/capture
+    - POST   https://api.omise.co/charges/{id}/reverse
+    - POST   https://api.omise.co/charges/{id}/expire
+    - POST   https://api.omise.co/charges/{id}/mark_as_paid
+    - POST   https://api.omise.co/charges/{id}/mark_as_failed
+    - POST   https://api.omise.co/charges/{id}/refunds
+    - GET    https://api.omise.co/charges/{id}/refunds
+    - GET    https://api.omise.co/charges/{id}/refunds/{refund_id}
+    - GET    https://api.omise.co/refunds
+    - POST   https://vault.omise.co/tokens
+    - GET    https://vault.omise.co/tokens/{id}
+    - POST   https://api.omise.co/sources
+    - GET    https://api.omise.co/sources/{id}
+    - POST   https://api.omise.co/customers
+    - GET    https://api.omise.co/customers
+    - GET    https://api.omise.co/customers/{id}
+    - PATCH  https://api.omise.co/customers/{id}
+    - DELETE https://api.omise.co/customers/{id}
+    - GET    https://api.omise.co/customers/{id}/cards
+    - GET    https://api.omise.co/disputes
+    - GET    https://api.omise.co/disputes/open
+    - GET    https://api.omise.co/disputes/pending
+    - GET    https://api.omise.co/disputes/closed
+    - GET    https://api.omise.co/disputes/{id}
+    - PATCH  https://api.omise.co/disputes/{id}
+    - PATCH  https://api.omise.co/disputes/{id}/accept
+    - GET    https://api.omise.co/disputes/{id}/documents
+    - POST   https://api.omise.co/transfers
+    - GET    https://api.omise.co/transfers
+    - GET    https://api.omise.co/transfers/{id}
+    - PATCH  https://api.omise.co/transfers/{id}
+    - DELETE https://api.omise.co/transfers/{id}
+    - POST   https://api.omise.co/transfers/{id}/mark_as_sent
+    - POST   https://api.omise.co/transfers/{id}/mark_as_paid
+    - POST   https://api.omise.co/recipients
+    - GET    https://api.omise.co/recipients
+    - GET    https://api.omise.co/recipients/{id}
+    - PATCH  https://api.omise.co/recipients/{id}
+    - DELETE https://api.omise.co/recipients/{id}
+    - PATCH  https://api.omise.co/recipients/{id}/verify
+    - POST   https://api.omise.co/schedules
+    - GET    https://api.omise.co/schedules
+    - GET    https://api.omise.co/schedules/{id}
+    - DELETE https://api.omise.co/schedules/{id}
+    - GET    https://api.omise.co/schedules/{id}/occurrences
+    - POST   https://api.omise.co/links
+    - GET    https://api.omise.co/links
+    - GET    https://api.omise.co/links/{id}
+    - GET    https://api.omise.co/events
+    - GET    https://api.omise.co/events/{id}
+    - GET    https://api.omise.co/account
+    - GET    https://api.omise.co/balance
+  modeledNotConfirmed:
+    - note: The following were included in the OpenAPI/collections as reasonable representative operations but were not each independently confirmed against a dedicated live doc page during this review.
+    - GET    https://api.omise.co/customers/{id}/cards/{card_id}
+    - PATCH  https://api.omise.co/customers/{id}/cards/{card_id}
+    - DELETE https://api.omise.co/customers/{id}/cards/{card_id}
+    - note: Request/response JSON schemas in the OpenAPI are a representative subset of documented object fields, not a byte-for-byte mirror of every field and enum.
+sources:
+  - url: https://docs.omise.co
+    type: Documentation
+    note: Getting started; two hosts (api.omise.co, vault.omise.co); HTTP Basic with public/secret keys; Omise-Version header.
+  - url: https://docs.omise.co/charges-api
+    type: APIReference
+    note: Charges create/list/get/update plus capture, reverse, expire, mark_as_paid, mark_as_failed. All HTTPS REST.
+  - url: https://docs.omise.co/tokens-api
+    type: APIReference
+    note: vault.omise.co tokenization with public key; POST /tokens, GET /tokens/{id}.
+  - url: https://docs.omise.co/sources-api
+    type: APIReference
+    note: Sources for PromptPay, TrueMoney, internet/mobile banking, installments, and wallets.
+  - url: https://docs.omise.co/customers-api
+    type: APIReference
+    note: Customers CRUD and nested cards.
+  - url: https://docs.omise.co/refunds-api
+    type: APIReference
+    note: Refunds nested under charges plus account-wide list.
+  - url: https://docs.omise.co/disputes-api
+    type: APIReference
+    note: Disputes list by status, retrieve, update, accept, documents.
+  - url: https://docs.omise.co/transfers-api
+    type: APIReference
+    note: Transfers CRUD plus mark_as_sent / mark_as_paid; fee/VAT/net fields.
+  - url: https://docs.omise.co/recipients-api
+    type: APIReference
+    note: Recipients CRUD plus verify; bank_account object.
+  - url: https://docs.omise.co/schedules-api
+    type: APIReference
+    note: Schedules for recurring charges/transfers; occurrences.
+  - url: https://docs.omise.co/links-api
+    type: APIReference
+    note: Payment Links create/list/get; multiple and used flags.
+  - url: https://docs.omise.co/events-api
+    type: APIReference
+    note: Events list/get; events back webhooks (HTTP POST to webhook_uri).
+  - url: https://docs.omise.co/balance-api
+    type: APIReference
+    note: Account and Balance objects; GET /account, GET /balance.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Omise's public API is request/response
+    REST over HTTPS across two hosts (api.omise.co and vault.omise.co), with
+    asynchronous notification delivered by outbound webhooks and mirrored by the
+    REST Events API. No AsyncAPI document was created because there is no
+    consumer-subscribed server-push transport (WebSocket or SSE) on Omise's own
+    API to model; webhooks are outbound HTTP POST to a merchant endpoint.

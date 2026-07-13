@@ -1,0 +1,482 @@
+{
+  "info": {
+    "name": "Omise (Opn Payments) API",
+    "description": "Representative, grounded subset of the Omise / Opn Payments REST API. Core API base: https://api.omise.co (secret key via HTTP Basic - key as username, empty password). Card tokenization: https://vault.omise.co (public key via HTTP Basic). Optional Omise-Version header pins the API version. Amounts are integers in the smallest currency unit. Omise rebranded to Opn Payments in 2022; hosts are unchanged.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{secretKey}}", "type": "string" },
+      { "key": "password", "value": "", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "apiBase", "value": "https://api.omise.co", "type": "string" },
+    { "key": "vaultBase", "value": "https://vault.omise.co", "type": "string" },
+    { "key": "secretKey", "value": "", "type": "string" },
+    { "key": "publicKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Charges",
+      "item": [
+        {
+          "name": "Create a charge",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 100000,\n  \"currency\": \"THB\",\n  \"card\": \"tokn_test_xxx\",\n  \"capture\": true\n}" },
+            "url": { "raw": "{{apiBase}}/charges", "host": ["{{apiBase}}"], "path": ["charges"] },
+            "description": "Creates a charge funded by a token, a saved customer card, or a source."
+          }
+        },
+        {
+          "name": "List charges",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges", "host": ["{{apiBase}}"], "path": ["charges"] },
+            "description": "Returns a paginated list of charges."
+          }
+        },
+        {
+          "name": "Retrieve a charge",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges/:id", "host": ["{{apiBase}}"], "path": ["charges", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Returns the charge matching the id."
+          }
+        },
+        {
+          "name": "Update a charge",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated\"\n}" },
+            "url": { "raw": "{{apiBase}}/charges/:id", "host": ["{{apiBase}}"], "path": ["charges", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Updates the description or metadata of a charge."
+          }
+        },
+        {
+          "name": "Capture a charge",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges/:id/capture", "host": ["{{apiBase}}"], "path": ["charges", ":id", "capture"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Captures a previously authorized (uncaptured) charge."
+          }
+        },
+        {
+          "name": "Reverse a charge",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges/:id/reverse", "host": ["{{apiBase}}"], "path": ["charges", ":id", "reverse"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Reverses an authorized, uncaptured charge."
+          }
+        },
+        {
+          "name": "Expire a charge",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges/:id/expire", "host": ["{{apiBase}}"], "path": ["charges", ":id", "expire"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Expires a pending charge."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tokens (vault)",
+      "item": [
+        {
+          "name": "Create a token",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{publicKey}}", "type": "string" }, { "key": "password", "value": "", "type": "string" }] },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"card\": {\n    \"name\": \"Somchai\",\n    \"number\": \"4242424242424242\",\n    \"expiration_month\": 12,\n    \"expiration_year\": 2027,\n    \"security_code\": \"123\"\n  }\n}" },
+            "url": { "raw": "{{vaultBase}}/tokens", "host": ["{{vaultBase}}"], "path": ["tokens"] },
+            "description": "Tokenizes raw card data on the vault host using the public key. Tokens are single-use."
+          }
+        },
+        {
+          "name": "Retrieve a token",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "basic", "basic": [{ "key": "username", "value": "{{publicKey}}", "type": "string" }, { "key": "password", "value": "", "type": "string" }] },
+            "header": [],
+            "url": { "raw": "{{vaultBase}}/tokens/:id", "host": ["{{vaultBase}}"], "path": ["tokens", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a token by id from the vault host."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sources",
+      "item": [
+        {
+          "name": "Create a source",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"type\": \"promptpay\",\n  \"amount\": 100000,\n  \"currency\": \"THB\"\n}" },
+            "url": { "raw": "{{apiBase}}/sources", "host": ["{{apiBase}}"], "path": ["sources"] },
+            "description": "Creates a payment source for a non-card method (promptpay, truemoney, banking, installments, wallets)."
+          }
+        },
+        {
+          "name": "Retrieve a source",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/sources/:id", "host": ["{{apiBase}}"], "path": ["sources", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a source by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create a customer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"customer@example.com\",\n  \"description\": \"Test customer\",\n  \"card\": \"tokn_test_xxx\"\n}" },
+            "url": { "raw": "{{apiBase}}/customers", "host": ["{{apiBase}}"], "path": ["customers"] },
+            "description": "Creates a customer; a card token is saved as a reusable card."
+          }
+        },
+        {
+          "name": "List customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/customers", "host": ["{{apiBase}}"], "path": ["customers"] },
+            "description": "Returns a list of customers."
+          }
+        },
+        {
+          "name": "Retrieve a customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/customers/:id", "host": ["{{apiBase}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Returns the customer matching the id."
+          }
+        },
+        {
+          "name": "Update a customer",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated\"\n}" },
+            "url": { "raw": "{{apiBase}}/customers/:id", "host": ["{{apiBase}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Updates a customer; pass a token in card to attach a new saved card."
+          }
+        },
+        {
+          "name": "Delete a customer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/customers/:id", "host": ["{{apiBase}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Destroys the customer matching the id."
+          }
+        },
+        {
+          "name": "List a customer's cards",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/customers/:id/cards", "host": ["{{apiBase}}"], "path": ["customers", ":id", "cards"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Lists the cards saved against a customer."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "item": [
+        {
+          "name": "Create a refund",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 100000\n}" },
+            "url": { "raw": "{{apiBase}}/charges/:id/refunds", "host": ["{{apiBase}}"], "path": ["charges", ":id", "refunds"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Refunds all or part of a charge."
+          }
+        },
+        {
+          "name": "List refunds for a charge",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/charges/:id/refunds", "host": ["{{apiBase}}"], "path": ["charges", ":id", "refunds"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Lists refunds for a charge."
+          }
+        },
+        {
+          "name": "List all refunds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/refunds", "host": ["{{apiBase}}"], "path": ["refunds"] },
+            "description": "Lists refunds across the account."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Disputes",
+      "item": [
+        {
+          "name": "List disputes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/disputes", "host": ["{{apiBase}}"], "path": ["disputes"] },
+            "description": "Lists all disputes."
+          }
+        },
+        {
+          "name": "List disputes by status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/disputes/:status", "host": ["{{apiBase}}"], "path": ["disputes", ":status"], "variable": [{ "key": "status", "value": "open" }] },
+            "description": "Lists disputes filtered by status (open, pending, closed)."
+          }
+        },
+        {
+          "name": "Retrieve a dispute",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/disputes/:id", "host": ["{{apiBase}}"], "path": ["disputes", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a dispute by id."
+          }
+        },
+        {
+          "name": "Accept a dispute",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/disputes/:id/accept", "host": ["{{apiBase}}"], "path": ["disputes", ":id", "accept"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Accepts a dispute, conceding the chargeback."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transfers",
+      "item": [
+        {
+          "name": "Create a transfer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 100000\n}" },
+            "url": { "raw": "{{apiBase}}/transfers", "host": ["{{apiBase}}"], "path": ["transfers"] },
+            "description": "Creates a transfer (payout) from your balance to a recipient."
+          }
+        },
+        {
+          "name": "List transfers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/transfers", "host": ["{{apiBase}}"], "path": ["transfers"] },
+            "description": "Lists transfers."
+          }
+        },
+        {
+          "name": "Retrieve a transfer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/transfers/:id", "host": ["{{apiBase}}"], "path": ["transfers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a transfer by id."
+          }
+        },
+        {
+          "name": "Delete a transfer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/transfers/:id", "host": ["{{apiBase}}"], "path": ["transfers", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Deletes a transfer that has not been sent."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipients",
+      "item": [
+        {
+          "name": "Create a recipient",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Somchai\",\n  \"type\": \"individual\",\n  \"bank_account\": {\n    \"brand\": \"bbl\",\n    \"number\": \"1234567890\",\n    \"name\": \"Somchai\"\n  }\n}" },
+            "url": { "raw": "{{apiBase}}/recipients", "host": ["{{apiBase}}"], "path": ["recipients"] },
+            "description": "Creates a recipient with a destination bank account."
+          }
+        },
+        {
+          "name": "List recipients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/recipients", "host": ["{{apiBase}}"], "path": ["recipients"] },
+            "description": "Lists recipients."
+          }
+        },
+        {
+          "name": "Retrieve a recipient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/recipients/:id", "host": ["{{apiBase}}"], "path": ["recipients", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a recipient by id."
+          }
+        },
+        {
+          "name": "Verify a recipient",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/recipients/:id/verify", "host": ["{{apiBase}}"], "path": ["recipients", ":id", "verify"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Marks a recipient as verified."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedules",
+      "item": [
+        {
+          "name": "Create a schedule",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"every\": 1,\n  \"period\": \"month\",\n  \"on\": { \"days_of_month\": [1] },\n  \"start_date\": \"2026-08-01\",\n  \"end_date\": \"2027-08-01\",\n  \"charge\": { \"customer\": \"cust_test_xxx\", \"amount\": 100000 }\n}" },
+            "url": { "raw": "{{apiBase}}/schedules", "host": ["{{apiBase}}"], "path": ["schedules"] },
+            "description": "Creates a recurring charge or transfer schedule."
+          }
+        },
+        {
+          "name": "List schedules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/schedules", "host": ["{{apiBase}}"], "path": ["schedules"] },
+            "description": "Lists schedules."
+          }
+        },
+        {
+          "name": "Retrieve a schedule",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/schedules/:id", "host": ["{{apiBase}}"], "path": ["schedules", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a schedule by id."
+          }
+        },
+        {
+          "name": "List schedule occurrences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/schedules/:id/occurrences", "host": ["{{apiBase}}"], "path": ["schedules", ":id", "occurrences"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Lists the occurrences generated by a schedule."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Links",
+      "item": [
+        {
+          "name": "Create a payment link",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 100000,\n  \"currency\": \"THB\",\n  \"title\": \"T-shirt\",\n  \"description\": \"Blue, size M\",\n  \"multiple\": false\n}" },
+            "url": { "raw": "{{apiBase}}/links", "host": ["{{apiBase}}"], "path": ["links"] },
+            "description": "Creates a shareable payment link."
+          }
+        },
+        {
+          "name": "List payment links",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/links", "host": ["{{apiBase}}"], "path": ["links"] },
+            "description": "Lists payment links."
+          }
+        },
+        {
+          "name": "Retrieve a payment link",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/links/:id", "host": ["{{apiBase}}"], "path": ["links", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves a payment link by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "List events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/events", "host": ["{{apiBase}}"], "path": ["events"] },
+            "description": "Lists account events (these back webhooks)."
+          }
+        },
+        {
+          "name": "Retrieve an event",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/events/:id", "host": ["{{apiBase}}"], "path": ["events", ":id"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Retrieves an event by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account and Balance",
+      "item": [
+        {
+          "name": "Retrieve the account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/account", "host": ["{{apiBase}}"], "path": ["account"] },
+            "description": "Retrieves the account profile."
+          }
+        },
+        {
+          "name": "Retrieve the balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{apiBase}}/balance", "host": ["{{apiBase}}"], "path": ["balance"] },
+            "description": "Retrieves the account balance (total, transferable, reserve)."
+          }
+        }
+      ]
+    }
+  ]
+}

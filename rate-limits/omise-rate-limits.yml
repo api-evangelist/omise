@@ -1,0 +1,56 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Omise
+providerId: omise
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- Thailand
+- Southeast Asia
+- Rate Limiting
+- Quotas
+description: >-
+  Omise (Opn Payments) does not publish fixed numeric request-rate limits for
+  its REST API in the public documentation. The API applies protective throttling
+  and standard HTTP semantics; well-behaved integrations pace requests and handle
+  retries idempotently. Pagination on list endpoints is bounded by a per-page
+  limit (default 20, maximum 100) with offset, which effectively caps
+  large-collection reads per request. Because charges move money, retries on
+  create operations should be guarded to avoid duplicate charges rather than
+  blindly retried.
+notes: >-
+  No specific per-minute or per-account numeric limit is documented as of the
+  review date. Values below are conventions and observed defaults, not a
+  published SLA. Confirm current throttling behavior with Opn Payments support
+  for high-volume use cases.
+sources:
+- https://docs.omise.co
+- https://docs.omise.co/charges-api
+- https://docs.omise.co/api-pagination
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented; protective throttling may apply.
+- name: List Pagination
+  scope: request
+  metric: records
+  limit: 100
+  notes: List endpoints accept limit (default 20, max 100) plus offset.
+policies:
+- name: Backoff Strategy
+  description: On HTTP 429 or 5xx, retry with exponential backoff and jitter.
+- name: Idempotency on Money Movement
+  description: Avoid blind retries of charge/transfer creation; verify state before retrying to prevent duplicate money movement.
+- name: Pagination
+  description: Page through large collections with limit and offset rather than requesting unbounded result sets.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

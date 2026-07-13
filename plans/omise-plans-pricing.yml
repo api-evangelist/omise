@@ -1,0 +1,116 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Omise
+providerId: omise
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Payments
+- Payment Gateway
+- Thailand
+- Southeast Asia
+- Fintech
+- Plans
+description: >-
+  Omise (Opn Payments) does not sell API access tiers. The API and dashboard are
+  free to use; the company earns per-transaction processing fees (a percentage of
+  each successful payment, varying by country and payment method), plus fees on
+  some payouts and value-added services. Pricing is country-specific across
+  Thailand, Japan, and Singapore and is quoted on the regional pricing pages;
+  large or high-volume merchants can negotiate custom rates. Test mode is fully
+  free. Per-transaction rates below are indicative and NOT reconciled - confirm
+  on the current regional pricing page.
+notes: >-
+  There is no monthly API subscription or request-metered plan. Cost is a
+  percentage of transaction value, so the "plans" here model the commercial
+  engagement (self-serve standard rate vs. negotiated enterprise rate) rather
+  than API quota tiers. Rates shown are Thailand indicative figures and exclude
+  applicable VAT.
+sources:
+- https://www.omise.co/en/pricing/thailand
+- https://www.opn.ooo/sg-en/pricing/
+- https://opn.ooo/jp-en/pricing
+- https://docs.omise.co
+plans:
+- id: omise-test
+  name: Test Mode
+  type: free
+  description: >-
+    Full access to the API and dashboard in test mode using test keys
+    (skey_test_/pkey_test_). No live funds move and no fees are charged.
+  entries:
+  - label: Test Transactions
+    name: test_transactions
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: Full API Access
+  - name: Test Keys
+  - name: Dashboard
+  - name: Webhooks
+- id: omise-standard
+  name: Standard (Pay-as-you-go)
+  type: usage
+  description: >-
+    Live processing on published per-transaction rates. No monthly fee; you are
+    charged a percentage of each successful payment, varying by method (cards vs.
+    local methods such as PromptPay) and by country.
+  entries:
+  - label: Card Processing (TH, indicative)
+    name: card_rate_th
+    type: usage
+    metric: percent_of_transaction
+    limit: -1
+    timeFrame: transaction
+    geo: TH
+    unit: 1
+    price: ~3.65% per successful card charge (excl. VAT)
+    userMultiplied: false
+  - label: PromptPay Processing (TH, indicative)
+    name: promptpay_rate_th
+    type: usage
+    metric: percent_of_transaction
+    limit: -1
+    timeFrame: transaction
+    geo: TH
+    unit: 1
+    price: ~1.65% per successful PromptPay charge (excl. VAT)
+    userMultiplied: false
+  elements:
+  - name: Live Card Payments
+  - name: Local Payment Methods
+  - name: Payouts and Transfers
+  - name: Disputes Handling
+- id: omise-enterprise
+  name: Enterprise / Custom
+  type: enterprise
+  description: >-
+    Negotiated per-transaction rates and terms for high-volume merchants,
+    platforms, and payment facilitators (Payfac), including sub-merchant
+    features. Contact Opn Payments sales.
+  entries:
+  - label: Negotiated Rate
+    name: negotiated_rate
+    type: usage
+    metric: percent_of_transaction
+    limit: -1
+    timeFrame: transaction
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Volume Pricing
+  - name: Payfac / Sub-merchant Support
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

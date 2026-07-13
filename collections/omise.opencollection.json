@@ -1,0 +1,425 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Omise (Opn Payments) API",
+    "version": "2019-05-29"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{secretKey}}",
+      "password": ""
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Charges", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a charge.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/charges",
+            "body": { "type": "json", "data": "{\n  \"amount\": 100000,\n  \"currency\": \"THB\",\n  \"card\": \"tokn_test_xxx\",\n  \"capture\": true\n}" }
+          },
+          "docs": "Creates a charge funded by a token, a saved customer card, or a source. Set capture=false to authorize only."
+        },
+        {
+          "info": { "name": "List charges.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/charges" },
+          "docs": "Returns a paginated list of charges."
+        },
+        {
+          "info": { "name": "Retrieve a charge.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/charges/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ]
+          },
+          "docs": "Returns the charge matching the id."
+        },
+        {
+          "info": { "name": "Update a charge.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.omise.co/charges/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ],
+            "body": { "type": "json", "data": "{\n  \"description\": \"Updated\"\n}" }
+          },
+          "docs": "Updates the description or metadata of a charge."
+        },
+        {
+          "info": { "name": "Capture a charge.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/charges/:id/capture",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ]
+          },
+          "docs": "Captures a previously authorized (uncaptured) charge."
+        },
+        {
+          "info": { "name": "Reverse a charge.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/charges/:id/reverse",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ]
+          },
+          "docs": "Reverses an authorized charge that has not been captured."
+        },
+        {
+          "info": { "name": "Expire a charge.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/charges/:id/expire",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ]
+          },
+          "docs": "Expires a pending charge so it can no longer be paid."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Tokens (vault)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a token.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://vault.omise.co/tokens",
+            "auth": { "type": "basic", "username": "{{publicKey}}", "password": "" },
+            "body": { "type": "json", "data": "{\n  \"card\": {\n    \"name\": \"Somchai\",\n    \"number\": \"4242424242424242\",\n    \"expiration_month\": 12,\n    \"expiration_year\": 2027,\n    \"security_code\": \"123\"\n  }\n}" }
+          },
+          "docs": "Tokenizes raw card data on the PCI-scoped vault host using the public key. Tokens are single-use."
+        },
+        {
+          "info": { "name": "Retrieve a token.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://vault.omise.co/tokens/:id",
+            "auth": { "type": "basic", "username": "{{publicKey}}", "password": "" },
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The token id." } ]
+          },
+          "docs": "Retrieves a token by id from the vault host."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Sources", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a source.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/sources",
+            "body": { "type": "json", "data": "{\n  \"type\": \"promptpay\",\n  \"amount\": 100000,\n  \"currency\": \"THB\"\n}" }
+          },
+          "docs": "Creates a payment source for a non-card method (promptpay, truemoney, internet/mobile banking, installments, wallets)."
+        },
+        {
+          "info": { "name": "Retrieve a source.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/sources/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The source id." } ]
+          },
+          "docs": "Retrieves a source by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a customer.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/customers",
+            "body": { "type": "json", "data": "{\n  \"email\": \"customer@example.com\",\n  \"description\": \"Test customer\",\n  \"card\": \"tokn_test_xxx\"\n}" }
+          },
+          "docs": "Creates a customer; passing a card token saves it as a reusable card."
+        },
+        {
+          "info": { "name": "List customers.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/customers" },
+          "docs": "Returns a list of customers."
+        },
+        {
+          "info": { "name": "Retrieve a customer.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/customers/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The customer id." } ]
+          },
+          "docs": "Returns the customer matching the id."
+        },
+        {
+          "info": { "name": "Update a customer.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.omise.co/customers/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The customer id." } ],
+            "body": { "type": "json", "data": "{\n  \"description\": \"Updated\"\n}" }
+          },
+          "docs": "Updates a customer; pass a token in card to attach a new saved card."
+        },
+        {
+          "info": { "name": "Delete a customer.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.omise.co/customers/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The customer id." } ]
+          },
+          "docs": "Destroys the customer matching the id."
+        },
+        {
+          "info": { "name": "List a customer's cards.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/customers/:id/cards",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The customer id." } ]
+          },
+          "docs": "Lists the cards saved against a customer."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Refunds", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a refund.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/charges/:id/refunds",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ],
+            "body": { "type": "json", "data": "{\n  \"amount\": 100000\n}" }
+          },
+          "docs": "Refunds all or part of a charge."
+        },
+        {
+          "info": { "name": "List refunds for a charge.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/charges/:id/refunds",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The charge id." } ]
+          },
+          "docs": "Lists refunds for a charge."
+        },
+        {
+          "info": { "name": "List all refunds.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/refunds" },
+          "docs": "Lists refunds across the account."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Disputes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List disputes.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/disputes" },
+          "docs": "Lists all disputes."
+        },
+        {
+          "info": { "name": "List disputes by status.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/disputes/:status",
+            "params": [ { "name": "status", "value": "open", "type": "path", "description": "open, pending, or closed." } ]
+          },
+          "docs": "Lists disputes filtered by status."
+        },
+        {
+          "info": { "name": "Retrieve a dispute.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/disputes/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The dispute id." } ]
+          },
+          "docs": "Retrieves a dispute by id."
+        },
+        {
+          "info": { "name": "Accept a dispute.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.omise.co/disputes/:id/accept",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The dispute id." } ]
+          },
+          "docs": "Accepts a dispute, conceding the chargeback."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Transfers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a transfer.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/transfers",
+            "body": { "type": "json", "data": "{\n  \"amount\": 100000\n}" }
+          },
+          "docs": "Creates a transfer (payout) from your balance to a recipient."
+        },
+        {
+          "info": { "name": "List transfers.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/transfers" },
+          "docs": "Lists transfers."
+        },
+        {
+          "info": { "name": "Retrieve a transfer.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/transfers/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The transfer id." } ]
+          },
+          "docs": "Retrieves a transfer by id."
+        },
+        {
+          "info": { "name": "Delete a transfer.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.omise.co/transfers/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The transfer id." } ]
+          },
+          "docs": "Deletes a transfer that has not been sent."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Recipients", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a recipient.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/recipients",
+            "body": { "type": "json", "data": "{\n  \"name\": \"Somchai\",\n  \"type\": \"individual\",\n  \"bank_account\": {\n    \"brand\": \"bbl\",\n    \"number\": \"1234567890\",\n    \"name\": \"Somchai\"\n  }\n}" }
+          },
+          "docs": "Creates a recipient with a destination bank account."
+        },
+        {
+          "info": { "name": "List recipients.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/recipients" },
+          "docs": "Lists recipients."
+        },
+        {
+          "info": { "name": "Retrieve a recipient.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/recipients/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The recipient id." } ]
+          },
+          "docs": "Retrieves a recipient by id."
+        },
+        {
+          "info": { "name": "Verify a recipient.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.omise.co/recipients/:id/verify",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The recipient id." } ]
+          },
+          "docs": "Marks a recipient as verified."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Schedules", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a schedule.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/schedules",
+            "body": { "type": "json", "data": "{\n  \"every\": 1,\n  \"period\": \"month\",\n  \"on\": { \"days_of_month\": [1] },\n  \"start_date\": \"2026-08-01\",\n  \"end_date\": \"2027-08-01\",\n  \"charge\": { \"customer\": \"cust_test_xxx\", \"amount\": 100000 }\n}" }
+          },
+          "docs": "Creates a recurring charge or transfer schedule."
+        },
+        {
+          "info": { "name": "List schedules.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/schedules" },
+          "docs": "Lists schedules."
+        },
+        {
+          "info": { "name": "Retrieve a schedule.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/schedules/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The schedule id." } ]
+          },
+          "docs": "Retrieves a schedule by id."
+        },
+        {
+          "info": { "name": "List schedule occurrences.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/schedules/:id/occurrences",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The schedule id." } ]
+          },
+          "docs": "Lists the occurrences generated by a schedule."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Links", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a payment link.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/links",
+            "body": { "type": "json", "data": "{\n  \"amount\": 100000,\n  \"currency\": \"THB\",\n  \"title\": \"T-shirt\",\n  \"description\": \"Blue, size M\",\n  \"multiple\": false\n}" }
+          },
+          "docs": "Creates a shareable payment link."
+        },
+        {
+          "info": { "name": "List payment links.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/links" },
+          "docs": "Lists payment links."
+        },
+        {
+          "info": { "name": "Retrieve a payment link.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/links/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The link id." } ]
+          },
+          "docs": "Retrieves a payment link by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Events", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List events.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/events" },
+          "docs": "Lists account events (these back webhooks)."
+        },
+        {
+          "info": { "name": "Retrieve an event.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/events/:id",
+            "params": [ { "name": "id", "value": "", "type": "path", "description": "The event id." } ]
+          },
+          "docs": "Retrieves an event by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Account and Balance", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve the account.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/account" },
+          "docs": "Retrieves the account profile."
+        },
+        {
+          "info": { "name": "Retrieve the balance.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.omise.co/balance" },
+          "docs": "Retrieves the account balance (total, transferable, reserve)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

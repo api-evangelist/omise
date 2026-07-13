@@ -1,0 +1,338 @@
+aid: omise
+url: https://raw.githubusercontent.com/api-evangelist/omise/refs/heads/main/apis.yml
+name: Omise
+kind: company
+description: Omise (now Opn Payments, part of Opn) is a Southeast Asian online payment
+  gateway serving Thailand, Japan, and Singapore. Its REST API lets developers accept
+  card payments and local methods - PromptPay, TrueMoney, internet and mobile banking,
+  installments, and QR wallets - through Charges, Tokens, Sources, and Customers, plus
+  Refunds, Disputes, Transfers, Recipients, Schedules, Links, and Events/webhooks.
+  Card data is tokenized on a separate PCI-scoped vault host. The company rebranded
+  from Omise to Opn in 2022; the API keeps the api.omise.co and vault.omise.co hosts.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Payments
+- Payment Gateway
+- Thailand
+- Southeast Asia
+- Charges
+- Tokens
+- Sources
+- PromptPay
+- Cards
+- Fintech
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: omise:omise-charges-api
+  name: Omise Charges API
+  tags:
+  - Charges
+  - Payments
+  - Capture
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/charges-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/charges-api
+    type: Documentation
+  - url: https://docs.omise.co/charges-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Create, retrieve, list, and update charges - the core payment object.
+    Supports auto or manual capture (authorize then capture), reverse, expire, and
+    test-mode mark_as_paid / mark_as_failed. Charges are funded by a token, a saved
+    customer card, or a Source (PromptPay, banking, wallet, installment).
+- aid: omise:omise-tokens-api
+  name: Omise Tokens API
+  tags:
+  - Tokens
+  - Cards
+  - Vault
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/tokens-api
+  baseURL: https://vault.omise.co
+  properties:
+  - url: https://docs.omise.co/tokens-api
+    type: Documentation
+  - url: https://docs.omise.co/tokens-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Single-use tokenization of raw card data on the PCI-scoped vault host
+    (vault.omise.co), authenticated with the public key. Create a token client-side
+    (typically via Omise.js) or server-side, then reference it when creating a charge
+    or attaching a card to a customer.
+- aid: omise:omise-sources-api
+  name: Omise Sources API
+  tags:
+  - Sources
+  - PromptPay
+  - Local Payments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/sources-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/sources-api
+    type: Documentation
+  - url: https://docs.omise.co/sources-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Create and retrieve payment Sources for non-card, local methods -
+    PromptPay, TrueMoney, internet and mobile banking, installments, and QR wallets
+    (Alipay+, WeChat Pay, GCash, ShopeePay, and more) across Thailand, Japan, and
+    Singapore. A Source carries a redirect, offline, or app_redirect flow and is
+    then charged.
+- aid: omise:omise-customers-api
+  name: Omise Customers API
+  tags:
+  - Customers
+  - Cards
+  - Recurring
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/customers-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/customers-api
+    type: Documentation
+  - url: https://docs.omise.co/customers-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Create, list, retrieve, update, and delete customers, and manage the
+    cards saved against them. Attaching an unused card token to a customer saves it
+    as a reusable card for repeat and recurring charges, giving a stored-credential
+    model for subscriptions and one-click checkout.
+- aid: omise:omise-refunds-api
+  name: Omise Refunds API
+  tags:
+  - Refunds
+  - Reversals
+  - Charges
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/refunds-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/refunds-api
+    type: Documentation
+  - url: https://docs.omise.co/refunds-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Issue full or partial refunds against a charge and list them, either
+    nested under a charge or across the whole account. Refund objects capture funding
+    amount and currency, acquirer references, approval codes, and whether the charge
+    was voided rather than refunded.
+- aid: omise:omise-disputes-api
+  name: Omise Disputes API
+  tags:
+  - Disputes
+  - Chargebacks
+  - Evidence
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/disputes-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/disputes-api
+    type: Documentation
+  - url: https://docs.omise.co/disputes-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: List disputes (all, open, pending, or closed), retrieve a dispute,
+    respond with evidence messages, accept a dispute, and manage supporting documents.
+    Disputes represent cardholder chargebacks with reason codes and won / lost
+    outcomes.
+- aid: omise:omise-transfers-api
+  name: Omise Transfers API
+  tags:
+  - Transfers
+  - Payouts
+  - Settlement
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/transfers-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/transfers-api
+    type: Documentation
+  - url: https://docs.omise.co/transfers-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Move funds from your Omise balance out to a bank account recipient -
+    create, list, retrieve, update, and delete transfers, with fee, VAT, and net
+    breakdowns. Test-mode mark_as_sent and mark_as_paid simulate the payout
+    lifecycle.
+- aid: omise:omise-recipients-api
+  name: Omise Recipients API
+  tags:
+  - Recipients
+  - Bank Accounts
+  - Payouts
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/recipients-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/recipients-api
+    type: Documentation
+  - url: https://docs.omise.co/recipients-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Manage the individual or corporation recipients that transfers are
+    paid to - create, list, retrieve, update, delete, and verify - each holding a
+    destination bank account, tax ID, and verification status. List the transfer
+    schedules attached to a recipient.
+- aid: omise:omise-schedules-api
+  name: Omise Schedules API
+  tags:
+  - Schedules
+  - Recurring
+  - Subscriptions
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/schedules-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/schedules-api
+    type: Documentation
+  - url: https://docs.omise.co/schedules-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Automate recurring charges and transfers on a day, week, or month
+    period with day-of-month or weekday rules and start / end dates. Create, list,
+    retrieve, and delete schedules and inspect their generated occurrences for
+    subscription and payout billing.
+- aid: omise:omise-links-api
+  name: Omise Links API
+  tags:
+  - Payment Links
+  - Checkout
+  - No Code
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/links-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/links-api
+    type: Documentation
+  - url: https://docs.omise.co/links-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Generate shareable payment Links for a fixed amount and currency that
+    collect a charge without custom checkout code. Links can be single-use or
+    multiple-use; list the charges created against a link.
+- aid: omise:omise-events-api
+  name: Omise Events API
+  tags:
+  - Events
+  - Webhooks
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/events-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/events-api
+    type: Documentation
+  - url: https://docs.omise.co/events-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Retrieve and list account events - each a keyed record (for example
+    charge.create or refund.create) wrapping the object that changed. Events back
+    Omise webhooks, which POST the same payloads to your configured webhook_uri for
+    server-to-server automation.
+- aid: omise:omise-account-balance-api
+  name: Omise Account and Balance API
+  tags:
+  - Account
+  - Balance
+  - Settlement
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.omise.co/balance-api
+  baseURL: https://api.omise.co
+  properties:
+  - url: https://docs.omise.co/balance-api
+    type: Documentation
+  - url: https://docs.omise.co/balance-api
+    type: APIReference
+  - url: openapi/omise-openapi.yml
+    type: OpenAPI
+  - url: collections/omise.postman_collection.json
+    type: PostmanCollection
+  - url: collections/omise.opencollection.json
+    type: OpenCollection
+  description: Retrieve your account profile (country, currencies, webhook URI,
+    transfer configuration, default API version) and your current balance - total,
+    transferable, and reserve amounts in the smallest currency unit.
+common:
+- type: DomainSecurity
+  url: security/omise-domain-security.yml
+- type: Authentication
+  url: authentication/omise-authentication.yml
+- type: GitHubOrganization
+  url: https://github.com/omise
+- type: LinkedIn
+  url: https://www.linkedin.com/company/opn-payments
+- type: Website
+  url: https://www.omise.co
+- type: Documentation
+  url: https://docs.omise.co
+- type: Plans
+  url: plans/omise-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/omise-rate-limits.yml
+- type: FinOps
+  url: finops/omise-finops.yml
+- url: https://www.omise.co/blog
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
