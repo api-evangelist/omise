@@ -313,6 +313,8 @@ apis:
     transfer configuration, default API version) and your current balance - total,
     transferable, and reserve amounts in the smallest currency unit.
 common:
+- type: AgenticAccess
+  url: agentic-access/omise-agentic-access.yml
 - type: DomainSecurity
   url: security/omise-domain-security.yml
 - type: Authentication
