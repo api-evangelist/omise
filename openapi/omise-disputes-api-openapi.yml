@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Omise (Opn Payments) Account Disputes API
+  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
+
+    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  version: 2019-05-29
+  contact:
+    name: Opn Payments (Omise)
+    url: https://www.omise.co
+  license:
+    name: Proprietary
+    url: https://www.omise.co
+servers:
+- url: https://api.omise.co
+  description: Core API (secret key)
+- url: https://vault.omise.co
+  description: Vault - tokenization only (public key)
+security:
+- secretKeyAuth: []
+tags:
+- name: Disputes
+  description: Cardholder chargebacks and evidence.
+paths:
+  /disputes:
+    get:
+      operationId: listDisputes
+      tags:
+      - Disputes
+      summary: List all disputes
+      responses:
+        '200':
+          description: A list of disputes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /disputes/{status}:
+    parameters:
+    - name: status
+      in: path
+      required: true
+      description: One of open, pending, or closed.
+      schema:
+        type: string
+        enum:
+        - open
+        - pending
+        - closed
+    get:
+      operationId: listDisputesByStatus
+      tags:
+      - Disputes
+      summary: List disputes by status
+      responses:
+        '200':
+          description: A filtered list of disputes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /disputes/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getDispute
+      tags:
+      - Disputes
+      summary: Retrieve a dispute
+      responses:
+        '200':
+          description: The requested dispute.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateDispute
+      tags:
+      - Disputes
+      summary: Update a dispute
+      description: Adds an evidence message or metadata to a dispute.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated dispute.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /disputes/{id}/accept:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    patch:
+      operationId: acceptDispute
+      tags:
+      - Disputes
+      summary: Accept a dispute
+      description: Accepts the dispute, conceding the chargeback.
+      responses:
+        '200':
+          description: The accepted dispute.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
+  schemas:
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
+    Dispute:
+      type: object
+      properties:
+        object:
+          type: string
+          example: dispute
+        id:
+          type: string
+        livemode:
+          type: boolean
+        amount:
+          type: integer
+        currency:
+          type: string
+        charge:
+          type: string
+        status:
+          type: string
+          enum:
+          - open
+          - pending
+          - won
+          - lost
+        reason_code:
+          type: string
+        reason_message:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        closed_at:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://api.omise.co. The secret key (skey_test_... or skey_... ) is the username; the password is left empty.
+    publicKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://vault.omise.co for tokenization and for creating sources. The public key (pkey_test_... or pkey_... ) is the username; the password is left empty.

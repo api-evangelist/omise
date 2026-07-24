@@ -1,0 +1,224 @@
+openapi: 3.0.3
+info:
+  title: Omise (Opn Payments) Account Customers API
+  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
+
+    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  version: 2019-05-29
+  contact:
+    name: Opn Payments (Omise)
+    url: https://www.omise.co
+  license:
+    name: Proprietary
+    url: https://www.omise.co
+servers:
+- url: https://api.omise.co
+  description: Core API (secret key)
+- url: https://vault.omise.co
+  description: Vault - tokenization only (public key)
+security:
+- secretKeyAuth: []
+tags:
+- name: Customers
+  description: Saved customers and their reusable cards.
+paths:
+  /customers:
+    post:
+      operationId: createCustomer
+      tags:
+      - Customers
+      summary: Create a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: The created customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: listCustomers
+      tags:
+      - Customers
+      summary: List customers
+      responses:
+        '200':
+          description: A list of customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /customers/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getCustomer
+      tags:
+      - Customers
+      summary: Retrieve a customer
+      responses:
+        '200':
+          description: The requested customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateCustomer
+      tags:
+      - Customers
+      summary: Update a customer
+      description: Updates a customer. Pass a token in `card` to attach a new saved card.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInput'
+      responses:
+        '200':
+          description: The updated customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteCustomer
+      tags:
+      - Customers
+      summary: Delete a customer
+      responses:
+        '200':
+          description: Deletion confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deleted'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
+  schemas:
+    Customer:
+      type: object
+      properties:
+        object:
+          type: string
+          example: customer
+        id:
+          type: string
+        livemode:
+          type: boolean
+        email:
+          type: string
+        description:
+          type: string
+        default_card:
+          type: string
+        cards:
+          $ref: '#/components/schemas/List'
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
+    CustomerInput:
+      type: object
+      properties:
+        email:
+          type: string
+        description:
+          type: string
+        card:
+          type: string
+          description: A token id (tokn_...) to save as a card.
+        metadata:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://api.omise.co. The secret key (skey_test_... or skey_... ) is the username; the password is left empty.
+    publicKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://vault.omise.co for tokenization and for creating sources. The public key (pkey_test_... or pkey_... ) is the username; the password is left empty.

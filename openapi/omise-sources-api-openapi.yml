@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: Omise (Opn Payments) Account Sources API
+  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
+
+    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  version: 2019-05-29
+  contact:
+    name: Opn Payments (Omise)
+    url: https://www.omise.co
+  license:
+    name: Proprietary
+    url: https://www.omise.co
+servers:
+- url: https://api.omise.co
+  description: Core API (secret key)
+- url: https://vault.omise.co
+  description: Vault - tokenization only (public key)
+security:
+- secretKeyAuth: []
+tags:
+- name: Sources
+  description: Non-card / local payment method sources.
+paths:
+  /sources:
+    post:
+      operationId: createSource
+      tags:
+      - Sources
+      summary: Create a source
+      description: Creates a payment Source for a non-card method (for example promptpay, truemoney, internet_banking_bbl, mobile_banking_scb, installment_kbank, alipay, rabbit_linepay). Can be created with the public key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceCreate'
+      responses:
+        '200':
+          description: The created source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /sources/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getSource
+      tags:
+      - Sources
+      summary: Retrieve a source
+      responses:
+        '200':
+          description: The requested source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
+  schemas:
+    Source:
+      type: object
+      properties:
+        object:
+          type: string
+          example: source
+        id:
+          type: string
+        livemode:
+          type: boolean
+        type:
+          type: string
+        flow:
+          type: string
+          enum:
+          - redirect
+          - offline
+          - app_redirect
+        amount:
+          type: integer
+        currency:
+          type: string
+        charge_status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
+    SourceCreate:
+      type: object
+      required:
+      - type
+      - amount
+      - currency
+      properties:
+        type:
+          type: string
+          description: Payment method type, for example promptpay, truemoney, internet_banking_bbl, mobile_banking_scb, installment_kbank, alipay, rabbit_linepay.
+        amount:
+          type: integer
+        currency:
+          type: string
+        installment_term:
+          type: integer
+        zero_interest_installments:
+          type: boolean
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://api.omise.co. The secret key (skey_test_... or skey_... ) is the username; the password is left empty.
+    publicKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://vault.omise.co for tokenization and for creating sources. The public key (pkey_test_... or pkey_... ) is the username; the password is left empty.

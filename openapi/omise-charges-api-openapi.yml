@@ -1,0 +1,415 @@
+openapi: 3.0.3
+info:
+  title: Omise (Opn Payments) Account Charges API
+  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
+
+    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  version: 2019-05-29
+  contact:
+    name: Opn Payments (Omise)
+    url: https://www.omise.co
+  license:
+    name: Proprietary
+    url: https://www.omise.co
+servers:
+- url: https://api.omise.co
+  description: Core API (secret key)
+- url: https://vault.omise.co
+  description: Vault - tokenization only (public key)
+security:
+- secretKeyAuth: []
+tags:
+- name: Charges
+  description: Core payment object - authorize, capture, reverse, expire.
+paths:
+  /charges:
+    post:
+      operationId: createCharge
+      tags:
+      - Charges
+      summary: Create a charge
+      description: Creates a charge funded by a token, a saved customer card, or a Source. Set `capture` to false to authorize only and capture later.
+      parameters:
+      - $ref: '#/components/parameters/OmiseVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargeCreate'
+      responses:
+        '200':
+          description: The created charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    get:
+      operationId: listCharges
+      tags:
+      - Charges
+      summary: List charges
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      responses:
+        '200':
+          description: A list of charges.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /charges/{id}:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    get:
+      operationId: getCharge
+      tags:
+      - Charges
+      summary: Retrieve a charge
+      responses:
+        '200':
+          description: The requested charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateCharge
+      tags:
+      - Charges
+      summary: Update a charge
+      description: Updates the description or metadata of a charge.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /charges/{id}/capture:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      operationId: captureCharge
+      tags:
+      - Charges
+      summary: Capture a charge
+      description: Captures a previously authorized (uncaptured) charge.
+      responses:
+        '200':
+          description: The captured charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /charges/{id}/reverse:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      operationId: reverseCharge
+      tags:
+      - Charges
+      summary: Reverse a charge
+      description: Reverses an authorized charge that has not yet been captured.
+      responses:
+        '200':
+          description: The reversed charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /charges/{id}/expire:
+    parameters:
+    - $ref: '#/components/parameters/Id'
+    post:
+      operationId: expireCharge
+      tags:
+      - Charges
+      summary: Expire a charge
+      description: Expires a pending charge so it can no longer be paid.
+      responses:
+        '200':
+          description: The expired charge.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    OmiseVersion:
+      name: Omise-Version
+      in: header
+      required: false
+      description: Pins the API version used for the request (for example 2019-05-29).
+      schema:
+        type: string
+    Order:
+      name: order
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+        - chronological
+        - reverse_chronological
+    Offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+  schemas:
+    Source:
+      type: object
+      properties:
+        object:
+          type: string
+          example: source
+        id:
+          type: string
+        livemode:
+          type: boolean
+        type:
+          type: string
+        flow:
+          type: string
+          enum:
+          - redirect
+          - offline
+          - app_redirect
+        amount:
+          type: integer
+        currency:
+          type: string
+        charge_status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
+    Card:
+      type: object
+      properties:
+        object:
+          type: string
+          example: card
+        id:
+          type: string
+        livemode:
+          type: boolean
+        brand:
+          type: string
+        last_digits:
+          type: string
+        first_digits:
+          type: string
+        name:
+          type: string
+        bank:
+          type: string
+        fingerprint:
+          type: string
+        expiration_month:
+          type: integer
+        expiration_year:
+          type: integer
+        security_code_check:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    Charge:
+      type: object
+      properties:
+        object:
+          type: string
+          example: charge
+        id:
+          type: string
+        livemode:
+          type: boolean
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - successful
+          - failed
+          - expired
+          - reversed
+        authorized:
+          type: boolean
+        paid:
+          type: boolean
+        capture:
+          type: boolean
+        captured:
+          type: boolean
+        refundable:
+          type: boolean
+        refunded_amount:
+          type: integer
+        source:
+          $ref: '#/components/schemas/Source'
+        card:
+          $ref: '#/components/schemas/Card'
+        authorize_uri:
+          type: string
+        return_uri:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    ChargeCreate:
+      type: object
+      required:
+      - amount
+      - currency
+      properties:
+        amount:
+          type: integer
+          description: Amount in the smallest currency unit.
+        currency:
+          type: string
+          description: ISO 4217 code (for example THB, JPY, SGD, USD).
+        card:
+          type: string
+          description: A token id (tokn_...) for a one-off card charge.
+        customer:
+          type: string
+          description: A customer id, to charge a saved card.
+        source:
+          type: string
+          description: A source id (src_...) for a non-card method.
+        capture:
+          type: boolean
+          default: true
+        description:
+          type: string
+        return_uri:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    secretKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://api.omise.co. The secret key (skey_test_... or skey_... ) is the username; the password is left empty.
+    publicKeyAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic auth against https://vault.omise.co for tokenization and for creating sources. The public key (pkey_test_... or pkey_... ) is the username; the password is left empty.
