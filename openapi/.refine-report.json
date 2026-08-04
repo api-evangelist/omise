@@ -1,0 +1,38 @@
+{
+  "provider": "omise",
+  "sources": [
+    "omise-account-api-openapi.yml",
+    "omise-cards-api-openapi.yml",
+    "omise-charges-api-openapi.yml",
+    "omise-customers-api-openapi.yml",
+    "omise-disputes-api-openapi.yml",
+    "omise-events-api-openapi.yml",
+    "omise-links-api-openapi.yml",
+    "omise-recipients-api-openapi.yml",
+    "omise-refunds-api-openapi.yml",
+    "omise-schedules-api-openapi.yml",
+    "omise-sources-api-openapi.yml",
+    "omise-tokens-api-openapi.yml",
+    "omise-transfers-api-openapi.yml"
+  ],
+  "outputs": [
+    "omise-account-api-openapi.yml",
+    "omise-cards-api-openapi.yml",
+    "omise-charges-api-openapi.yml",
+    "omise-customers-api-openapi.yml",
+    "omise-disputes-api-openapi.yml",
+    "omise-events-api-openapi.yml",
+    "omise-links-api-openapi.yml",
+    "omise-recipients-api-openapi.yml",
+    "omise-refunds-api-openapi.yml",
+    "omise-schedules-api-openapi.yml",
+    "omise-sources-api-openapi.yml",
+    "omise-tokens-api-openapi.yml",
+    "omise-transfers-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
