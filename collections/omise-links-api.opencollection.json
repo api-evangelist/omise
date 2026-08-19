@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Omise (Opn Payments) Account Links API",
+    "version": "2019-05-29"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List payment links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/links"
+          },
+          "docs": "List payment links"
+        },
+        {
+          "info": {
+            "name": "Create a payment link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.omise.co/links",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a payment link"
+        },
+        {
+          "info": {
+            "name": "Retrieve a payment link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/links/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object identifier."
+              }
+            ]
+          },
+          "docs": "Retrieve a payment link"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

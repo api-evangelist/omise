@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Omise (Opn Payments) Account Cards API",
+    "version": "2019-05-29"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List a customer's cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/customers/:id/cards",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object identifier."
+              }
+            ]
+          },
+          "docs": "List a customer's cards"
+        },
+        {
+          "info": {
+            "name": "Retrieve a card",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.omise.co/customers/:id/cards/:card_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object identifier."
+              },
+              {
+                "name": "card_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a card"
+        },
+        {
+          "info": {
+            "name": "Update a card",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.omise.co/customers/:id/cards/:card_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object identifier."
+              },
+              {
+                "name": "card_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the billing details of a saved card."
+        },
+        {
+          "info": {
+            "name": "Delete a card",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.omise.co/customers/:id/cards/:card_id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The object identifier."
+              },
+              {
+                "name": "card_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a card"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

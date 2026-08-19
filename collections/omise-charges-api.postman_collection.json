@@ -1,0 +1,1370 @@
+{
+  "item": [
+    {
+      "id": "49993796-5445-40d9-a6ab-ded61f8066af",
+      "name": "Charges",
+      "description": {
+        "content": "Core payment object - authorize, capture, reverse, expire.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e6037de6-1036-491c-9730-9d67541e9a2a",
+          "name": "Create a charge",
+          "request": {
+            "name": "Create a charge",
+            "description": {
+              "content": "Creates a charge funded by a token, a saved customer card, or a Source. Set `capture` to false to authorize only and capture later.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "charges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Pins the API version used for the request (for example 2019-05-29).",
+                "key": "Omise-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"card\": \"<string>\",\n  \"customer\": \"<string>\",\n  \"source\": \"<string>\",\n  \"capture\": true,\n  \"description\": \"<string>\",\n  \"return_uri\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "538b3654-703c-4b0d-a69b-78c42b791892",
+              "name": "The created charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Pins the API version used for the request (for example 2019-05-29).",
+                    "key": "Omise-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"card\": \"<string>\",\n  \"customer\": \"<string>\",\n  \"source\": \"<string>\",\n  \"capture\": true,\n  \"description\": \"<string>\",\n  \"return_uri\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": true,\n    \"key_2\": 840\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f734324-b7f2-4771-a50a-0d977b3c62fb",
+              "name": "The request was invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Pins the API version used for the request (for example 2019-05-29).",
+                    "key": "Omise-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"card\": \"<string>\",\n  \"customer\": \"<string>\",\n  \"source\": \"<string>\",\n  \"capture\": true,\n  \"description\": \"<string>\",\n  \"return_uri\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": true,\n    \"key_2\": 840\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0cbf8a8-d928-4ade-adea-0db55025c164",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Pins the API version used for the request (for example 2019-05-29).",
+                    "key": "Omise-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"card\": \"<string>\",\n  \"customer\": \"<string>\",\n  \"source\": \"<string>\",\n  \"capture\": true,\n  \"description\": \"<string>\",\n  \"return_uri\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": true,\n    \"key_2\": 840\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b20732d9-feb3-4d22-9ae4-55362661361b",
+          "name": "List charges",
+          "request": {
+            "name": "List charges",
+            "description": {},
+            "url": {
+              "path": [
+                "charges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4c714b28-7da1-46ba-8721-6adac2beae2c",
+              "name": "A list of charges.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"list\",\n  \"data\": [\n    {\n      \"key_0\": false,\n      \"key_1\": 5297.8046047600465\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ],\n  \"limit\": 2088,\n  \"offset\": 6336,\n  \"total\": 7641,\n  \"order\": \"string\",\n  \"location\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e30573da-302f-49c6-adda-575a1e9f29d8",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "59cafd1d-62ab-401e-81b5-c629d935921e",
+          "name": "Retrieve a charge",
+          "request": {
+            "name": "Retrieve a charge",
+            "description": {},
+            "url": {
+              "path": [
+                "charges",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f109dd58-ae7c-4a5b-9cb7-e020f486624c",
+              "name": "The requested charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "335d069d-287c-43e6-be85-91466a644b48",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb0c1f5a-8512-44dc-85b4-31acac96a9fa",
+              "name": "The object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "136a5007-d16f-464a-a02c-5ad7687fb565",
+          "name": "Update a charge",
+          "request": {
+            "name": "Update a charge",
+            "description": {
+              "content": "Updates the description or metadata of a charge.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "charges",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": true,\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e5bf026a-e581-4fa1-919e-c818420a4fa0",
+              "name": "The updated charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29ea9d14-8bb8-4603-82ae-f0dcef257f93",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdf04aa0-69d5-4a23-8bd0-6ca0cc198139",
+              "name": "The object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "52065216-c526-4ce8-8366-cfd744ab025a",
+          "name": "Capture a charge",
+          "request": {
+            "name": "Capture a charge",
+            "description": {
+              "content": "Captures a previously authorized (uncaptured) charge.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "charges",
+                ":id",
+                "capture"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "111059e4-5561-4f53-999e-dd701d21bbd9",
+              "name": "The captured charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa4aee10-4af7-4379-b801-aefa7b34ea37",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc4143c6-1996-4a0c-be8f-4a4b515c39d8",
+              "name": "The object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "capture"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f1027a2-d736-4994-8f5b-5a670c8b9d8c",
+          "name": "Reverse a charge",
+          "request": {
+            "name": "Reverse a charge",
+            "description": {
+              "content": "Reverses an authorized charge that has not yet been captured.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "charges",
+                ":id",
+                "reverse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "33bd69ac-f9a3-4566-a34b-e4fb2d83b272",
+              "name": "The reversed charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "reverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7afbc680-331c-4db0-be8f-89b30f6bf4f2",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "reverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dcbfd2d3-55a7-477e-9e08-ffd430b43b31",
+          "name": "Expire a charge",
+          "request": {
+            "name": "Expire a charge",
+            "description": {
+              "content": "Expires a pending charge so it can no longer be paid.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "charges",
+                ":id",
+                "expire"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "de413945-2088-41eb-848d-efece333d738",
+              "name": "The expired charge.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "expire"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"charge\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"amount\": 1665,\n  \"currency\": \"string\",\n  \"status\": \"successful\",\n  \"authorized\": true,\n  \"paid\": false,\n  \"capture\": false,\n  \"captured\": true,\n  \"refundable\": false,\n  \"refunded_amount\": 4865,\n  \"source\": {\n    \"object\": \"source\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"type\": \"string\",\n    \"flow\": \"redirect\",\n    \"amount\": 9903,\n    \"currency\": \"string\",\n    \"charge_status\": \"string\",\n    \"created_at\": \"1957-10-06T14:48:25.306Z\"\n  },\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 156,\n    \"expiration_year\": 3139,\n    \"security_code_check\": false,\n    \"created_at\": \"1985-12-02T06:33:28.336Z\"\n  },\n  \"authorize_uri\": \"string\",\n  \"return_uri\": \"string\",\n  \"description\": \"string\",\n  \"metadata\": {\n    \"key_0\": 7822\n  },\n  \"created_at\": \"1961-09-16T17:34:54.609Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f66ec90a-0395-406b-ae12-85a2d8017e82",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "charges",
+                    ":id",
+                    "expire"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.omise.co",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4c8cd27e-0a64-4197-91f0-03166f2a921d",
+    "name": "Omise (Opn Payments) Account Charges API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).\nScope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.\n\nContact Support:\n Name: Opn Payments (Omise)",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,378 @@
+{
+  "item": [
+    {
+      "id": "0fbcc00d-6e79-445a-8163-702ad43bad16",
+      "name": "Tokens",
+      "description": {
+        "content": "Single-use card tokenization on the vault host.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ffa87adb-ae78-450c-804e-d3f64a7dfeda",
+          "name": "Create a token",
+          "request": {
+            "name": "Create a token",
+            "description": {
+              "content": "Tokenizes raw card data. Served from the vault host (https://vault.omise.co) and authenticated with the public key. Tokens are single-use.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "tokens"
+              ],
+              "host": [
+                "vault",
+                "omise",
+                "co"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<integer>\",\n    \"expiration_year\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"security_code\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postal_code\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "db6fcff5-021a-40a3-a0d5-7277106d5f56",
+              "name": "The created token.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "vault",
+                    "omise",
+                    "co"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<integer>\",\n    \"expiration_year\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"security_code\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postal_code\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"token\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"used\": true,\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 6891,\n    \"expiration_year\": 55,\n    \"security_code_check\": false,\n    \"created_at\": \"1970-03-30T13:18:21.164Z\"\n  },\n  \"created_at\": \"1973-12-25T13:40:00.068Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "688358fd-663e-4d5d-91b0-ed24c646daad",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "vault",
+                    "omise",
+                    "co"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"card\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<integer>\",\n    \"expiration_year\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"security_code\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postal_code\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b5d3b0b4-46ad-454a-84bb-9f5eb3a80757",
+          "name": "Retrieve a token",
+          "request": {
+            "name": "Retrieve a token",
+            "description": {},
+            "url": {
+              "path": [
+                "tokens",
+                ":id"
+              ],
+              "host": [
+                "{{tokens-id-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The object identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "15d37ce9-e1c5-4498-925b-bbe7fc23d48e",
+              "name": "The requested token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{tokens-id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"token\",\n  \"id\": \"string\",\n  \"livemode\": false,\n  \"used\": true,\n  \"card\": {\n    \"object\": \"card\",\n    \"id\": \"string\",\n    \"livemode\": false,\n    \"brand\": \"string\",\n    \"last_digits\": \"string\",\n    \"first_digits\": \"string\",\n    \"name\": \"string\",\n    \"bank\": \"string\",\n    \"fingerprint\": \"string\",\n    \"expiration_month\": 6891,\n    \"expiration_year\": 55,\n    \"security_code_check\": false,\n    \"created_at\": \"1970-03-30T13:18:21.164Z\"\n  },\n  \"created_at\": \"1973-12-25T13:40:00.068Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32386a56-1530-476b-b2ce-6dfa31551d1a",
+              "name": "The object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{tokens-id-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The object identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"error\",\n  \"location\": \"string\",\n  \"code\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.omise.co",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://vault.omise.co",
+      "key": "tokens-id-Url"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e318619a-1afb-4b1f-9af0-10fd42be7684",
+    "name": "Omise (Opn Payments) Account Tokens API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).\nScope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.\n\nContact Support:\n Name: Opn Payments (Omise)",
+      "type": "text/plain"
+    }
+  }
+}
