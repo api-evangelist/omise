@@ -354,6 +354,8 @@ apis:
   humanURL: https://docs.omise.co/charges-api
   baseURL: https://api.omise.co
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
