@@ -9,6 +9,18 @@ description: Omise (now Opn Payments, part of Opn) is a Southeast Asian online p
   Refunds, Disputes, Transfers, Recipients, Schedules, Links, and Events/webhooks.
   Card data is tokenized on a separate PCI-scoped vault host. The company rebranded
   from Omise to Opn in 2022; the API keeps the api.omise.co and vault.omise.co hosts.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
