@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Omise (Opn Payments) Account Charges API
-  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
-
-    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  title: Omise (Opn Payments) Charges API
+  description: Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore.
   version: 2019-05-29
   contact:
     name: Opn Payments (Omise)
@@ -171,14 +169,42 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The object identifier.
+    Offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+    Order:
+      name: order
+      in: query
+      required: false
       schema:
         type: string
+        enum:
+        - chronological
+        - reverse_chronological
     Limit:
       name: limit
       in: query
@@ -194,50 +220,45 @@ components:
       description: Pins the API version used for the request (for example 2019-05-29).
       schema:
         type: string
-    Order:
-      name: order
-      in: query
-      required: false
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
       schema:
         type: string
-        enum:
-        - chronological
-        - reverse_chronological
-    Offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 0
   schemas:
-    Source:
+    ChargeCreate:
       type: object
+      required:
+      - amount
+      - currency
       properties:
-        object:
-          type: string
-          example: source
-        id:
-          type: string
-        livemode:
-          type: boolean
-        type:
-          type: string
-        flow:
-          type: string
-          enum:
-          - redirect
-          - offline
-          - app_redirect
         amount:
           type: integer
+          description: Amount in the smallest currency unit.
         currency:
           type: string
-        charge_status:
+          description: ISO 4217 code (for example THB, JPY, SGD, USD).
+        card:
           type: string
-        created_at:
+          description: A token id (tokn_...) for a one-off card charge.
+        customer:
           type: string
-          format: date-time
+          description: A customer id, to charge a saved card.
+        source:
+          type: string
+          description: A source id (src_...) for a non-card method.
+        capture:
+          type: boolean
+          default: true
+        description:
+          type: string
+        return_uri:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
     List:
       type: object
       description: Omise paginated list envelope.
@@ -273,37 +294,6 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-    Card:
-      type: object
-      properties:
-        object:
-          type: string
-          example: card
-        id:
-          type: string
-        livemode:
-          type: boolean
-        brand:
-          type: string
-        last_digits:
-          type: string
-        first_digits:
-          type: string
-        name:
-          type: string
-        bank:
-          type: string
-        fingerprint:
-          type: string
-        expiration_month:
-          type: integer
-        expiration_year:
-          type: integer
-        security_code_check:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     Charge:
       type: object
       properties:
@@ -354,56 +344,64 @@ components:
         created_at:
           type: string
           format: date-time
-    ChargeCreate:
+    Card:
       type: object
-      required:
-      - amount
-      - currency
       properties:
+        object:
+          type: string
+          example: card
+        id:
+          type: string
+        livemode:
+          type: boolean
+        brand:
+          type: string
+        last_digits:
+          type: string
+        first_digits:
+          type: string
+        name:
+          type: string
+        bank:
+          type: string
+        fingerprint:
+          type: string
+        expiration_month:
+          type: integer
+        expiration_year:
+          type: integer
+        security_code_check:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    Source:
+      type: object
+      properties:
+        object:
+          type: string
+          example: source
+        id:
+          type: string
+        livemode:
+          type: boolean
+        type:
+          type: string
+        flow:
+          type: string
+          enum:
+          - redirect
+          - offline
+          - app_redirect
         amount:
           type: integer
-          description: Amount in the smallest currency unit.
         currency:
           type: string
-          description: ISO 4217 code (for example THB, JPY, SGD, USD).
-        card:
+        charge_status:
           type: string
-          description: A token id (tokn_...) for a one-off card charge.
-        customer:
+        created_at:
           type: string
-          description: A customer id, to charge a saved card.
-        source:
-          type: string
-          description: A source id (src_...) for a non-card method.
-        capture:
-          type: boolean
-          default: true
-        description:
-          type: string
-        return_uri:
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+          format: date-time
   securitySchemes:
     secretKeyAuth:
       type: http

@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Omise (Opn Payments) Account Recipients API
-  description: 'Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore. This OpenAPI document describes a representative, grounded subset of the public REST API. The core API is served from https://api.omise.co and authenticated with a secret key via HTTP Basic (the key is the username, the password is empty). Raw card data is tokenized on a separate PCI-scoped vault host, https://vault.omise.co, authenticated with the public key. API behavior is pinned with the optional `Omise-Version` header. All monetary amounts are integers in the smallest unit of the currency (for example satang for THB, yen for JPY).
-
-    Scope note: paths, methods, and object identifiers here are grounded in the published Omise documentation (docs.omise.co). Request and response schemas are modeled as a solid representative subset rather than a byte-for-byte mirror of every field; verify exact payloads against the live docs.'
+  title: Omise (Opn Payments) Recipients API
+  description: Omise, now Opn Payments (part of Opn), is an online payment gateway for Thailand, Japan, and Singapore.
   version: 2019-05-29
   contact:
     name: Opn Payments (Omise)
@@ -127,50 +125,39 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The object identifier.
-      schema:
-        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    List:
+    RecipientInput:
       type: object
-      description: Omise paginated list envelope.
+      required:
+      - name
+      - type
       properties:
-        object:
+        name:
           type: string
-          example: list
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        limit:
-          type: integer
-        offset:
-          type: integer
-        total:
-          type: integer
-        order:
+        type:
           type: string
-        location:
+          enum:
+          - individual
+          - corporation
+        email:
           type: string
-    Error:
-      type: object
-      properties:
-        object:
+        tax_id:
           type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
+        bank_account:
+          $ref: '#/components/schemas/BankAccount'
     Recipient:
       type: object
       properties:
@@ -198,6 +185,28 @@ components:
         created_at:
           type: string
           format: date-time
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
     Deleted:
       type: object
       properties:
@@ -207,6 +216,19 @@ components:
           type: string
         deleted:
           type: boolean
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
     BankAccount:
       type: object
       properties:
@@ -219,38 +241,14 @@ components:
           type: string
         name:
           type: string
-    RecipientInput:
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - individual
-          - corporation
-        email:
-          type: string
-        tax_id:
-          type: string
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
   securitySchemes:
     secretKeyAuth:
       type: http
