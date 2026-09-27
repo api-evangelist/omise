@@ -117,14 +117,14 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: The object was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
@@ -185,15 +185,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Deleted:
-      type: object
-      properties:
-        object:
-          type: string
-        id:
-          type: string
-        deleted:
-          type: boolean
     Error:
       type: object
       properties:
@@ -207,6 +198,15 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
   parameters:
     Id:
       name: id

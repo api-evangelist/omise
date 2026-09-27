@@ -108,20 +108,55 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
+    CustomerInput:
+      type: object
+      properties:
+        email:
+          type: string
+        description:
+          type: string
+        card:
+          type: string
+          description: A token id (tokn_...) to save as a card.
+        metadata:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
     Customer:
       type: object
       properties:
@@ -146,41 +181,6 @@ components:
         created_at:
           type: string
           format: date-time
-    CustomerInput:
-      type: object
-      properties:
-        email:
-          type: string
-        description:
-          type: string
-        card:
-          type: string
-          description: A token id (tokn_...) to save as a card.
-        metadata:
-          type: object
-          additionalProperties: true
-    List:
-      type: object
-      description: Omise paginated list envelope.
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        limit:
-          type: integer
-        offset:
-          type: integer
-        total:
-          type: integer
-        order:
-          type: string
-        location:
-          type: string
     Deleted:
       type: object
       properties:
@@ -190,19 +190,19 @@ components:
           type: string
         deleted:
           type: boolean
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
+  responses:
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     Id:
       name: id

@@ -105,14 +105,14 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: The object was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
@@ -140,15 +140,6 @@ components:
           type: string
         location:
           type: string
-    Deleted:
-      type: object
-      properties:
-        object:
-          type: string
-        id:
-          type: string
-        deleted:
-          type: boolean
     Error:
       type: object
       properties:
@@ -162,33 +153,6 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-    ScheduleInput:
-      type: object
-      required:
-      - every
-      - period
-      properties:
-        every:
-          type: integer
-        period:
-          type: string
-          enum:
-          - day
-          - week
-          - month
-        true:
-          type: object
-          additionalProperties: true
-        start_date:
-          type: string
-        end_date:
-          type: string
-        charge:
-          type: object
-          additionalProperties: true
-        transfer:
-          type: object
-          additionalProperties: true
     Schedule:
       type: object
       properties:
@@ -222,6 +186,42 @@ components:
         created_at:
           type: string
           format: date-time
+    ScheduleInput:
+      type: object
+      required:
+      - every
+      - period
+      properties:
+        every:
+          type: integer
+        period:
+          type: string
+          enum:
+          - day
+          - week
+          - month
+        true:
+          type: object
+          additionalProperties: true
+        start_date:
+          type: string
+        end_date:
+          type: string
+        charge:
+          type: object
+          additionalProperties: true
+        transfer:
+          type: object
+          additionalProperties: true
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
   parameters:
     Id:
       name: id
