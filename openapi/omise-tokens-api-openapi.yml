@@ -74,19 +74,70 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Token:
+      type: object
+      properties:
+        object:
+          type: string
+          example: token
+        id:
+          type: string
+        livemode:
+          type: boolean
+        used:
+          type: boolean
+        card:
+          $ref: '#/components/schemas/Card'
+        created_at:
+          type: string
+          format: date-time
+    CardInput:
+      type: object
+      required:
+      - number
+      - expiration_month
+      - expiration_year
+      properties:
+        name:
+          type: string
+        number:
+          type: string
+        expiration_month:
+          type: integer
+        expiration_year:
+          type: integer
+        security_code:
+          type: string
+        city:
+          type: string
+        postal_code:
+          type: string
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
     Card:
       type: object
       properties:
@@ -118,57 +169,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Token:
-      type: object
-      properties:
-        object:
-          type: string
-          example: token
-        id:
-          type: string
-        livemode:
-          type: boolean
-        used:
-          type: boolean
-        card:
-          $ref: '#/components/schemas/Card'
-        created_at:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
-    CardInput:
-      type: object
-      required:
-      - number
-      - expiration_month
-      - expiration_year
-      properties:
-        name:
-          type: string
-        number:
-          type: string
-        expiration_month:
-          type: integer
-        expiration_year:
-          type: integer
-        security_code:
-          type: string
-        city:
-          type: string
-        postal_code:
-          type: string
   parameters:
     Id:
       name: id

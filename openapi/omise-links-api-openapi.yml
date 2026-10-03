@@ -88,29 +88,20 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    List:
-      type: object
-      description: Omise paginated list envelope.
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        limit:
-          type: integer
-        offset:
-          type: integer
-        total:
-          type: integer
-        order:
-          type: string
-        location:
-          type: string
     Link:
       type: object
       properties:
@@ -153,19 +144,28 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-  responses:
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
   parameters:
     Id:
       name: id

@@ -170,12 +170,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: The request was invalid.
       content:
@@ -188,35 +182,37 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Card:
+    Source:
       type: object
       properties:
         object:
           type: string
-          example: card
+          example: source
         id:
           type: string
         livemode:
           type: boolean
-        brand:
+        type:
           type: string
-        last_digits:
+        flow:
           type: string
-        first_digits:
-          type: string
-        name:
-          type: string
-        bank:
-          type: string
-        fingerprint:
-          type: string
-        expiration_month:
+          enum:
+          - redirect
+          - offline
+          - app_redirect
+        amount:
           type: integer
-        expiration_year:
-          type: integer
-        security_code_check:
-          type: boolean
+        currency:
+          type: string
+        charge_status:
+          type: string
         created_at:
           type: string
           format: date-time
@@ -286,30 +282,34 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-    Source:
+    Card:
       type: object
       properties:
         object:
           type: string
-          example: source
+          example: card
         id:
           type: string
         livemode:
           type: boolean
-        type:
+        brand:
           type: string
-        flow:
+        last_digits:
           type: string
-          enum:
-          - redirect
-          - offline
-          - app_redirect
-        amount:
+        first_digits:
+          type: string
+        name:
+          type: string
+        bank:
+          type: string
+        fingerprint:
+          type: string
+        expiration_month:
           type: integer
-        currency:
-          type: string
-        charge_status:
-          type: string
+        expiration_year:
+          type: integer
+        security_code_check:
+          type: boolean
         created_at:
           type: string
           format: date-time
@@ -364,13 +364,6 @@ components:
           type: string
           format: date-time
   parameters:
-    Offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 0
     Limit:
       name: limit
       in: query
@@ -379,18 +372,25 @@ components:
         type: integer
         default: 20
         maximum: 100
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The object identifier.
-      schema:
-        type: string
     OmiseVersion:
       name: Omise-Version
       in: header
       required: false
       description: Pins the API version used for the request (for example 2019-05-29).
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
       schema:
         type: string
     Order:

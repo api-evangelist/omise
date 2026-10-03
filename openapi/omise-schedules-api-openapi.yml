@@ -105,19 +105,68 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
+    ScheduleInput:
+      type: object
+      required:
+      - every
+      - period
+      properties:
+        every:
+          type: integer
+        period:
+          type: string
+          enum:
+          - day
+          - week
+          - month
+        'on':
+          type: object
+          additionalProperties: true
+        start_date:
+          type: string
+        end_date:
+          type: string
+        charge:
+          type: object
+          additionalProperties: true
+        transfer:
+          type: object
+          additionalProperties: true
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
     List:
       type: object
       description: Omise paginated list envelope.
@@ -139,19 +188,6 @@ components:
         order:
           type: string
         location:
-          type: string
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
           type: string
     Schedule:
       type: object
@@ -186,42 +222,6 @@ components:
         created_at:
           type: string
           format: date-time
-    ScheduleInput:
-      type: object
-      required:
-      - every
-      - period
-      properties:
-        every:
-          type: integer
-        period:
-          type: string
-          enum:
-          - day
-          - week
-          - month
-        true:
-          type: object
-          additionalProperties: true
-        start_date:
-          type: string
-        end_date:
-          type: string
-        charge:
-          type: object
-          additionalProperties: true
-        transfer:
-          type: object
-          additionalProperties: true
-    Deleted:
-      type: object
-      properties:
-        object:
-          type: string
-        id:
-          type: string
-        deleted:
-          type: boolean
   parameters:
     Id:
       name: id

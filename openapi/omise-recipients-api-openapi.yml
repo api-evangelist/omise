@@ -126,41 +126,19 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    List:
-      type: object
-      description: Omise paginated list envelope.
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        limit:
-          type: integer
-        offset:
-          type: integer
-        total:
-          type: integer
-        order:
-          type: string
-        location:
-          type: string
     BankAccount:
       type: object
       properties:
@@ -173,19 +151,6 @@ components:
           type: string
         name:
           type: string
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
     Deleted:
       type: object
       properties:
@@ -195,6 +160,25 @@ components:
           type: string
         deleted:
           type: boolean
+    RecipientInput:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - individual
+          - corporation
+        email:
+          type: string
+        tax_id:
+          type: string
+        bank_account:
+          $ref: '#/components/schemas/BankAccount'
     Recipient:
       type: object
       properties:
@@ -222,25 +206,41 @@ components:
         created_at:
           type: string
           format: date-time
-    RecipientInput:
+    Error:
       type: object
-      required:
-      - name
-      - type
       properties:
-        name:
+        object:
           type: string
-        type:
+          example: error
+        location:
           type: string
-          enum:
-          - individual
-          - corporation
-        email:
+        code:
           type: string
-        tax_id:
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
           type: string
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
   parameters:
     Id:
       name: id
