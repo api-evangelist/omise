@@ -108,42 +108,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Deleted:
-      type: object
-      properties:
-        object:
-          type: string
-        id:
-          type: string
-        deleted:
-          type: boolean
-    CustomerInput:
-      type: object
-      properties:
-        email:
-          type: string
-        description:
-          type: string
-        card:
-          type: string
-          description: A token id (tokn_...) to save as a card.
-        metadata:
-          type: object
-          additionalProperties: true
     Error:
       type: object
       properties:
@@ -203,6 +168,41 @@ components:
           type: string
         location:
           type: string
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
+    CustomerInput:
+      type: object
+      properties:
+        email:
+          type: string
+        description:
+          type: string
+        card:
+          type: string
+          description: A token id (tokn_...) to save as a card.
+        metadata:
+          type: object
+          additionalProperties: true
+  responses:
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     Id:
       name: id

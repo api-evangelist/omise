@@ -51,13 +51,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -72,6 +65,25 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
+    Balance:
+      type: object
+      properties:
+        object:
+          type: string
+          example: balance
+        livemode:
+          type: boolean
+        currency:
+          type: string
+        total:
+          type: integer
+        transferable:
+          type: integer
+        reserve:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
     Account:
       type: object
       properties:
@@ -99,25 +111,13 @@ components:
         created_at:
           type: string
           format: date-time
-    Balance:
-      type: object
-      properties:
-        object:
-          type: string
-          example: balance
-        livemode:
-          type: boolean
-        currency:
-          type: string
-        total:
-          type: integer
-        transferable:
-          type: integer
-        reserve:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     secretKeyAuth:
       type: http

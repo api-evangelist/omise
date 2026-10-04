@@ -73,37 +73,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Token:
-      type: object
-      properties:
-        object:
-          type: string
-          example: token
-        id:
-          type: string
-        livemode:
-          type: boolean
-        used:
-          type: boolean
-        card:
-          $ref: '#/components/schemas/Card'
-        created_at:
-          type: string
-          format: date-time
     CardInput:
       type: object
       required:
@@ -125,6 +95,23 @@ components:
           type: string
         postal_code:
           type: string
+    Token:
+      type: object
+      properties:
+        object:
+          type: string
+          example: token
+        id:
+          type: string
+        livemode:
+          type: boolean
+        used:
+          type: boolean
+        card:
+          $ref: '#/components/schemas/Card'
+        created_at:
+          type: string
+          format: date-time
     Error:
       type: object
       properties:
@@ -169,6 +156,19 @@ components:
         created_at:
           type: string
           format: date-time
+  responses:
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     Id:
       name: id

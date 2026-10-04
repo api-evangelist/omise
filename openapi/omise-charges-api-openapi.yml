@@ -169,75 +169,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    BadRequest:
-      description: The request was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Source:
-      type: object
-      properties:
-        object:
-          type: string
-          example: source
-        id:
-          type: string
-        livemode:
-          type: boolean
-        type:
-          type: string
-        flow:
-          type: string
-          enum:
-          - redirect
-          - offline
-          - app_redirect
-        amount:
-          type: integer
-        currency:
-          type: string
-        charge_status:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-    List:
-      type: object
-      description: Omise paginated list envelope.
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-        limit:
-          type: integer
-        offset:
-          type: integer
-        total:
-          type: integer
-        order:
-          type: string
-        location:
-          type: string
     ChargeCreate:
       type: object
       required:
@@ -282,37 +214,6 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-    Card:
-      type: object
-      properties:
-        object:
-          type: string
-          example: card
-        id:
-          type: string
-        livemode:
-          type: boolean
-        brand:
-          type: string
-        last_digits:
-          type: string
-        first_digits:
-          type: string
-        name:
-          type: string
-        bank:
-          type: string
-        fingerprint:
-          type: string
-        expiration_month:
-          type: integer
-        expiration_year:
-          type: integer
-        security_code_check:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     Charge:
       type: object
       properties:
@@ -363,36 +264,87 @@ components:
         created_at:
           type: string
           format: date-time
+    Source:
+      type: object
+      properties:
+        object:
+          type: string
+          example: source
+        id:
+          type: string
+        livemode:
+          type: boolean
+        type:
+          type: string
+        flow:
+          type: string
+          enum:
+          - redirect
+          - offline
+          - app_redirect
+        amount:
+          type: integer
+        currency:
+          type: string
+        charge_status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Card:
+      type: object
+      properties:
+        object:
+          type: string
+          example: card
+        id:
+          type: string
+        livemode:
+          type: boolean
+        brand:
+          type: string
+        last_digits:
+          type: string
+        first_digits:
+          type: string
+        name:
+          type: string
+        bank:
+          type: string
+        fingerprint:
+          type: string
+        expiration_month:
+          type: integer
+        expiration_year:
+          type: integer
+        security_code_check:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    List:
+      type: object
+      description: Omise paginated list envelope.
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        limit:
+          type: integer
+        offset:
+          type: integer
+        total:
+          type: integer
+        order:
+          type: string
+        location:
+          type: string
   parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 20
-        maximum: 100
-    OmiseVersion:
-      name: Omise-Version
-      in: header
-      required: false
-      description: Pins the API version used for the request (for example 2019-05-29).
-      schema:
-        type: string
-    Offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 0
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The object identifier.
-      schema:
-        type: string
     Order:
       name: order
       in: query
@@ -402,6 +354,54 @@ components:
         enum:
         - chronological
         - reverse_chronological
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    Offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+    OmiseVersion:
+      name: Omise-Version
+      in: header
+      required: false
+      description: Pins the API version used for the request (for example 2019-05-29).
+      schema:
+        type: string
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: The request was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     secretKeyAuth:
       type: http

@@ -53,27 +53,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The object identifier.
-      schema:
-        type: string
   schemas:
     Error:
       type: object
@@ -88,6 +67,25 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
+    Event:
+      type: object
+      properties:
+        object:
+          type: string
+          example: event
+        id:
+          type: string
+        livemode:
+          type: boolean
+        key:
+          type: string
+          description: For example charge.create, charge.complete, refund.create.
+        data:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
     List:
       type: object
       description: Omise paginated list envelope.
@@ -110,25 +108,27 @@ components:
           type: string
         location:
           type: string
-    Event:
-      type: object
-      properties:
-        object:
-          type: string
-          example: event
-        id:
-          type: string
-        livemode:
-          type: boolean
-        key:
-          type: string
-          description: For example charge.create, charge.complete, refund.create.
-        data:
-          type: object
-          additionalProperties: true
-        created_at:
-          type: string
-          format: date-time
+  responses:
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: The object identifier.
+      schema:
+        type: string
   securitySchemes:
     secretKeyAuth:
       type: http

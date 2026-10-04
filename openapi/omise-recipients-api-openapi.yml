@@ -125,41 +125,20 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The object was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    BankAccount:
+    Error:
       type: object
       properties:
         object:
           type: string
-          example: bank_account
-        brand:
+          example: error
+        location:
           type: string
-        number:
+        code:
           type: string
-        name:
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
           type: string
-    Deleted:
-      type: object
-      properties:
-        object:
-          type: string
-        id:
-          type: string
-        deleted:
-          type: boolean
     RecipientInput:
       type: object
       required:
@@ -206,19 +185,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
     List:
       type: object
       description: Omise paginated list envelope.
@@ -241,6 +207,40 @@ components:
           type: string
         location:
           type: string
+    Deleted:
+      type: object
+      properties:
+        object:
+          type: string
+        id:
+          type: string
+        deleted:
+          type: boolean
+    BankAccount:
+      type: object
+      properties:
+        object:
+          type: string
+          example: bank_account
+        brand:
+          type: string
+        number:
+          type: string
+        name:
+          type: string
+  responses:
+    NotFound:
+      description: The object was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     Id:
       name: id
