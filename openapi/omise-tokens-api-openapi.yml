@@ -74,6 +74,19 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        object:
+          type: string
+          example: error
+        location:
+          type: string
+        code:
+          type: string
+          description: For example authentication_failure, not_found, invalid_charge.
+        message:
+          type: string
     CardInput:
       type: object
       required:
@@ -112,19 +125,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        object:
-          type: string
-          example: error
-        location:
-          type: string
-        code:
-          type: string
-          description: For example authentication_failure, not_found, invalid_charge.
-        message:
-          type: string
     Card:
       type: object
       properties:
@@ -157,14 +157,14 @@ components:
           type: string
           format: date-time
   responses:
-    NotFound:
-      description: The object was not found.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: The object was not found.
       content:
         application/json:
           schema:

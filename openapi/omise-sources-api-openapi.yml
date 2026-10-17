@@ -74,24 +74,6 @@ components:
           description: For example authentication_failure, not_found, invalid_charge.
         message:
           type: string
-    SourceCreate:
-      type: object
-      required:
-      - type
-      - amount
-      - currency
-      properties:
-        type:
-          type: string
-          description: Payment method type, for example promptpay, truemoney, internet_banking_bbl, mobile_banking_scb, installment_kbank, alipay, rabbit_linepay.
-        amount:
-          type: integer
-        currency:
-          type: string
-        installment_term:
-          type: integer
-        zero_interest_installments:
-          type: boolean
     Source:
       type: object
       properties:
@@ -119,15 +101,33 @@ components:
         created_at:
           type: string
           format: date-time
+    SourceCreate:
+      type: object
+      required:
+      - type
+      - amount
+      - currency
+      properties:
+        type:
+          type: string
+          description: Payment method type, for example promptpay, truemoney, internet_banking_bbl, mobile_banking_scb, installment_kbank, alipay, rabbit_linepay.
+        amount:
+          type: integer
+        currency:
+          type: string
+        installment_term:
+          type: integer
+        zero_interest_installments:
+          type: boolean
   responses:
-    NotFound:
-      description: The object was not found.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: The object was not found.
       content:
         application/json:
           schema:

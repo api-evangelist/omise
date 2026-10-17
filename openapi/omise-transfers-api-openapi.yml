@@ -117,39 +117,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Transfer:
-      type: object
-      properties:
-        object:
-          type: string
-          example: transfer
-        id:
-          type: string
-        livemode:
-          type: boolean
-        amount:
-          type: integer
-        currency:
-          type: string
-        recipient:
-          type: string
-        sent:
-          type: boolean
-        paid:
-          type: boolean
-        sendable:
-          type: boolean
-        fee:
-          type: integer
-        fee_vat:
-          type: integer
-        total_fee:
-          type: integer
-        net:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
     Error:
       type: object
       properties:
@@ -185,6 +152,39 @@ components:
           type: string
         location:
           type: string
+    Transfer:
+      type: object
+      properties:
+        object:
+          type: string
+          example: transfer
+        id:
+          type: string
+        livemode:
+          type: boolean
+        amount:
+          type: integer
+        currency:
+          type: string
+        recipient:
+          type: string
+        sent:
+          type: boolean
+        paid:
+          type: boolean
+        sendable:
+          type: boolean
+        fee:
+          type: integer
+        fee_vat:
+          type: integer
+        total_fee:
+          type: integer
+        net:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
     Deleted:
       type: object
       properties:
@@ -195,14 +195,14 @@ components:
         deleted:
           type: boolean
   responses:
-    NotFound:
-      description: The object was not found.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
+    NotFound:
+      description: The object was not found.
       content:
         application/json:
           schema:
