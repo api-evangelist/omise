@@ -1,4 +1,4 @@
-# Omise (omise)
+# Omise
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,157 +64,142 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Omise, now **Opn Payments** (part of Opn), is a Southeast Asian online payment gateway serving **Thailand, Japan, and Singapore**. Its REST API lets developers accept card payments and local methods - PromptPay, TrueMoney, internet and mobile banking, installments, and QR wallets - and manage the full money-movement lifecycle: Charges, Tokens, Sources, Customers, Refunds, Disputes, Transfers, Recipients, Schedules, Links, and Events/webhooks.
+Omise (now Opn Payments, part of Opn) is a Southeast Asian online payment gateway serving Thailand, Japan, and Singapore. Its REST API lets developers accept card payments and local methods - PromptPay, TrueMoney, internet and mobile banking, installments, and QR wallets - through Charges, Tokens, Sources, and Customers, plus Refunds, Disputes, Transfers, Recipients, Schedules, Links, and Events/webhooks. Card data is tokenized on a separate PCI-scoped vault host. The company rebranded from Omise to Opn in 2022; the API keeps the api.omise.co and vault.omise.co hosts.
 
-> **Naming:** The company rebranded from **Omise** to **Opn Payments** in 2022 (parent company **Opn**). Documentation now lives under both `docs.omise.co` and `docs.opn.ooo`, but the **API hosts are unchanged** - `api.omise.co` and `vault.omise.co` - and object/key prefixes stay Omise-native (`skey_`, `pkey_`, `tokn_`, `chrg_`, `src_`, `cust_`). This catalog entry uses the slug `omise`.
+**Areas:** Payments · Payment Gateway · Thailand · Southeast Asia · Charges · Tokens · Sources · PromptPay · Cards · Fintech
 
-## Access model (read this first)
+## Omise on APIs.io
 
-- **Two hosts.** The **core API** is `https://api.omise.co`. Raw card data is tokenized on a **separate PCI-scoped vault host**, `https://vault.omise.co`, so a card number never has to touch your server.
-- **Two keys, HTTP Basic.** Every request uses **HTTP Basic auth with the key as the username and an empty password**.
-  - **Secret key** (`skey_test_...` / `skey_...`) - used **server-side** against `api.omise.co` for charges, customers, refunds, transfers, and everything else.
-  - **Public key** (`pkey_test_...` / `pkey_...`) - used **client-side** (typically via Omise.js) against `vault.omise.co` to create card tokens, and to create Sources.
-- **Test vs. live.** `*_test_*` keys run in test mode - no funds move and no fees are charged. `*_test_*`-only helpers like `mark_as_paid` / `mark_as_failed` simulate outcomes. Live keys move real money.
-- **API versioning.** Pin behavior per request with the optional `Omise-Version` header (for example `2019-05-29`); otherwise the account default applies.
-- **Amounts.** All monetary amounts are **integers in the smallest currency unit** (satang for THB, yen for JPY).
+Everything profiled for Omise is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/omise/](https://apis.io/providers/omise/)** — or go straight to one of the APIs or properties below.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/omise/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/omise/refs/heads/main/apis.yml)
+### APIs (13)
 
-## Tags
+- [Omise Account API](https://apis.io/apis/omise/omise-account-api/) — Account profile and balance.
+- [Omise Cards API](https://apis.io/apis/omise/omise-cards-api/) — Cards saved against a customer.
+- [Omise Charges API](https://apis.io/apis/omise/omise-charges-api/) — Core payment object - authorize, capture, reverse, expire.
+- [Omise Customers API](https://apis.io/apis/omise/omise-customers-api/) — Saved customers and their reusable cards.
+- [Omise Disputes API](https://apis.io/apis/omise/omise-disputes-api/) — Cardholder chargebacks and evidence.
+- [Omise Events API](https://apis.io/apis/omise/omise-events-api/) — Account events backing webhooks.
+- [Omise Links API](https://apis.io/apis/omise/omise-links-api/) — Shareable payment links.
+- [Omise Recipients API](https://apis.io/apis/omise/omise-recipients-api/) — Bank-account recipients that transfers pay out to.
+- [Omise Refunds API](https://apis.io/apis/omise/omise-refunds-api/) — Full or partial refunds against a charge.
+- [Omise Schedules API](https://apis.io/apis/omise/omise-schedules-api/) — Recurring charges and transfers.
+- [Omise Sources API](https://apis.io/apis/omise/omise-sources-api/) — Non-card / local payment method sources.
+- [Omise Tokens API](https://apis.io/apis/omise/omise-tokens-api/) — Single-use card tokenization on the vault host.
+- [Omise Transfers API](https://apis.io/apis/omise/omise-transfers-api/) — Payouts from your balance to a recipient bank account.
 
-- Payments
-- Payment Gateway
-- Thailand
-- Southeast Asia
-- Charges
-- Tokens
-- Sources
-- PromptPay
-- Cards
-- Fintech
+### Published properties
 
-## Timestamps
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Created:** 2026-07-12
-- **Modified:** 2026-07-12
+#### Agentic access (1)
 
-## APIs
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Omise Charges API
+- [Omise Agentic Access](https://apis.io/agentic-access/omise/omise-agentic-access/)
 
-Create, retrieve, list, and update charges - the core payment object. Supports auto or manual capture (authorize then capture), reverse, expire, and test-mode mark_as_paid / mark_as_failed. Charges are funded by a token, a saved customer card, or a Source.
+#### Collections (14)
 
-- **Human URL:** [https://docs.omise.co/charges-api](https://docs.omise.co/charges-api)
-- **Base URL:** `https://api.omise.co`
+Postman and Open Collection request collections.
 
-### Omise Tokens API
+- [Omise (Opn Payments) API](https://apis.io/collections/omise/open-omise/)
+- [Omise (Opn Payments) Account API](https://apis.io/collections/omise/open-omise-account-api/)
+- [Omise (Opn Payments) Account Cards API](https://apis.io/collections/omise/open-omise-cards-api/)
+- [Omise (Opn Payments) Account Charges API](https://apis.io/collections/omise/open-omise-charges-api/)
+- [Omise (Opn Payments) Account Customers API](https://apis.io/collections/omise/open-omise-customers-api/)
+- [Omise (Opn Payments) Account Disputes API](https://apis.io/collections/omise/open-omise-disputes-api/)
+- [Omise (Opn Payments) Account Events API](https://apis.io/collections/omise/open-omise-events-api/)
+- [Omise (Opn Payments) Account Links API](https://apis.io/collections/omise/open-omise-links-api/)
+- [Omise (Opn Payments) Account Recipients API](https://apis.io/collections/omise/open-omise-recipients-api/)
+- [Omise (Opn Payments) Account Refunds API](https://apis.io/collections/omise/open-omise-refunds-api/)
+- [Omise (Opn Payments) Account Schedules API](https://apis.io/collections/omise/open-omise-schedules-api/)
+- [Omise (Opn Payments) Account Sources API](https://apis.io/collections/omise/open-omise-sources-api/)
+- [Omise (Opn Payments) Account Tokens API](https://apis.io/collections/omise/open-omise-tokens-api/)
+- [Omise (Opn Payments) Account Transfers API](https://apis.io/collections/omise/open-omise-transfers-api/)
 
-Single-use tokenization of raw card data on the PCI-scoped vault host, authenticated with the public key. Create a token client-side (via Omise.js) or server-side, then reference it when creating a charge or saving a card.
+#### Security (2)
 
-- **Human URL:** [https://docs.omise.co/tokens-api](https://docs.omise.co/tokens-api)
-- **Base URL:** `https://vault.omise.co`
+Authentication, trust centre, and vulnerability disclosure.
 
-### Omise Sources API
+- [Omise Authentication](https://apis.io/security/omise/omise-authentication/)
+- [Omise Domain Security](https://apis.io/security/omise/omise-domain-security/)
 
-Create and retrieve payment Sources for non-card, local methods - PromptPay, TrueMoney, internet and mobile banking, installments, and QR wallets (Alipay+, WeChat Pay, GCash, ShopeePay, and more) - each carrying a redirect, offline, or app_redirect flow.
+#### Plans and pricing (1)
 
-- **Human URL:** [https://docs.omise.co/sources-api](https://docs.omise.co/sources-api)
-- **Base URL:** `https://api.omise.co`
+Published plans, tiers and prices.
 
-### Omise Customers API
+- [Omise Plans Pricing](https://apis.io/plans/omise/omise-plans-pricing/)
 
-Create, list, retrieve, update, and delete customers, and manage saved cards. Attaching a card token to a customer saves it for repeat and recurring charges.
+#### Rate limits (1)
 
-- **Human URL:** [https://docs.omise.co/customers-api](https://docs.omise.co/customers-api)
-- **Base URL:** `https://api.omise.co`
+Published request limits.
 
-### Omise Refunds API
+- [Omise Rate Limits](https://apis.io/rate-limits/omise/omise-rate-limits/)
 
-Issue full or partial refunds against a charge and list them, nested under a charge or across the account.
+#### FinOps (1)
 
-- **Human URL:** [https://docs.omise.co/refunds-api](https://docs.omise.co/refunds-api)
-- **Base URL:** `https://api.omise.co`
+What the API costs to run, by operation.
 
-### Omise Disputes API
+- [Omise Finops](https://apis.io/finops/omise/omise-finops/)
 
-List disputes (all, open, pending, closed), retrieve a dispute, respond with evidence, accept a dispute, and manage supporting documents.
+## Where to find this API
 
-- **Human URL:** [https://docs.omise.co/disputes-api](https://docs.omise.co/disputes-api)
-- **Base URL:** `https://api.omise.co`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Omise Transfers API
-
-Move funds from your balance out to a bank-account recipient, with fee, VAT, and net breakdowns; test-mode mark_as_sent / mark_as_paid simulate the payout lifecycle.
-
-- **Human URL:** [https://docs.omise.co/transfers-api](https://docs.omise.co/transfers-api)
-- **Base URL:** `https://api.omise.co`
-
-### Omise Recipients API
-
-Manage the individual or corporation recipients that transfers pay out to - create, list, retrieve, update, delete, and verify - each holding a destination bank account and verification status.
-
-- **Human URL:** [https://docs.omise.co/recipients-api](https://docs.omise.co/recipients-api)
-- **Base URL:** `https://api.omise.co`
-
-### Omise Schedules API
-
-Automate recurring charges and transfers on a day, week, or month period with day-of-month or weekday rules and start / end dates; inspect generated occurrences.
-
-- **Human URL:** [https://docs.omise.co/schedules-api](https://docs.omise.co/schedules-api)
-- **Base URL:** `https://api.omise.co`
-
-### Omise Links API
-
-Generate shareable payment Links for a fixed amount and currency without custom checkout code; single- or multiple-use, with associated charges listed.
-
-- **Human URL:** [https://docs.omise.co/links-api](https://docs.omise.co/links-api)
-- **Base URL:** `https://api.omise.co`
-
-### Omise Events API
-
-Retrieve and list account events - each a keyed record wrapping the object that changed. Events back Omise **webhooks**, which POST the same payloads to your configured `webhook_uri`.
-
-- **Human URL:** [https://docs.omise.co/events-api](https://docs.omise.co/events-api)
-- **Base URL:** `https://api.omise.co`
-
-### Omise Account and Balance API
-
-Retrieve your account profile (country, currencies, webhook URI, transfer config, default API version) and your current balance - total, transferable, and reserve.
-
-- **Human URL:** [https://docs.omise.co/balance-api](https://docs.omise.co/balance-api)
-- **Base URL:** `https://api.omise.co`
-
-## WebSocket
-
-**No.** Omise exposes a REST API over HTTPS plus outbound **webhooks** (HTTP POST to your `webhook_uri`). There is **no documented public WebSocket (`ws://` / `wss://`) endpoint**, so no AsyncAPI artifact is included. See `review.yml`.
-
-## Artifacts
-
-- [OpenAPI](openapi/omise-openapi.yml) - grounded representative subset of the REST API
-- [Postman Collection](collections/omise.postman_collection.json)
-- [Open Collection](collections/omise.opencollection.json)
-- [Authentication](authentication/omise-authentication.yml)
-- [Plans / Pricing](plans/omise-plans-pricing.yml)
-- [Rate Limits](rate-limits/omise-rate-limits.yml)
-- [FinOps](finops/omise-finops.yml)
-- [Domain Security](security/omise-domain-security.yml)
-- [Review](review.yml)
-
-## Fidelity note
-
-Paths, hosts, methods, auth, and object identifiers are **grounded** in the published Omise documentation (`docs.omise.co`) and live host probes (2026-07-12). Request/response **schemas in the OpenAPI are a representative subset** of documented fields rather than a byte-for-byte mirror, and a few nested card operations are modeled rather than each independently confirmed - these are flagged honestly in `review.yml`. **Pricing is per-transaction and country-specific; the rates referenced are indicative and `reconciled: false`.**
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/omise)
-- [LinkedIn](https://www.linkedin.com/company/opn-payments)
 - [Website](https://www.omise.co)
 - [Documentation](https://docs.omise.co)
-- [Plans](plans/omise-plans-pricing.yml)
-- [Rate Limits](rate-limits/omise-rate-limits.yml)
-- [Fin Ops](finops/omise-finops.yml)
+- [Blog](https://www.omise.co/blog)
+- [GitHub](https://github.com/omise)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 50.5 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 19.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/omise/](https://apis.io/providers/omise/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Omise: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/omise/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
